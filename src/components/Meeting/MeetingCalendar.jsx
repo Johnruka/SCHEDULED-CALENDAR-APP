@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MeetingForm from "./MeetingForm";
+import MeetingForm from "../Meeting/MeetingForm";
 import Footer from "../shared/Footer"
 import Navbar from "../shared/Navbar";
 

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import MeetingCalendar from "./components/Meeting/MeetingCalendar";
 import './App.css'
+import MeetingCalendar from "./components/Meeting/MeetingCalendar";
 const App = () => {
   return (
-   
-    <MeetingCalendar />
-  )
-  
+    
+    <>
+    <MeetingCalendar/>
+    
+  </>
+);
 };
 
-export default App;
+export default App;  
