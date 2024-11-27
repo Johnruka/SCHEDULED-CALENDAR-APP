@@ -2,7 +2,10 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CiEdit, CiTrash } from "react-icons/ci";
 
-const MeetingList = ({ meetings }) => {
+const MeetingList = ({ 
+    meetings,
+    
+}) => {
   return (
     <div className="col-md-12">
       <div

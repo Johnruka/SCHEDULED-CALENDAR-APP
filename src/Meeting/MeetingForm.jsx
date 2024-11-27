@@ -115,4 +115,4 @@ const CalendarForm = ({ addMeeting }) => {
   );
 };
 
-export default CalendarForm;
+export default MeetingForm;

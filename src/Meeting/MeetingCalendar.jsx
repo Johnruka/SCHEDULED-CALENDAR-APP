@@ -1,7 +1,7 @@
 import React from 'react'
 
-const MeetingList = () => {
-  const [MeetingList, setMeetingList] = useState([]); 
+const MeetingCalendar = () => {
+  const [Meeti, setMeetingList] = useState([]); 
   const [inputValue, setInputValue] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
