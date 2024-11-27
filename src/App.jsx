@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MeetingCalendar from "./components/Meeting/MeetingCalendar";
-import '../style/App'
+import './App.css'
 const App = () => {
   return (
    
