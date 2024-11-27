@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MeetingForm from "./MeetingForm";
-
+import Footer from "../shared/Footer"
+import Navbar from "../shared/Navbar";
 
 const MeetingCalendar = () => {
     
@@ -19,8 +20,8 @@ const MeetingCalendar = () => {
     }
   }; 
 
-  const removeFromMeetingList = (Meetings) => {
-    const updatedOrderList = orderList.map((item) =>
+  const removeFromMeetingList = (MeetingList) => {
+    const updatedMeetingList = MeetingList.map((item) =>
       item.id === foodId ? { ...item, count: item.count - 1 } : item
     );
     const finalMeetingList= updatedMeetingList.filter((item) => item.count > 0);
@@ -36,6 +37,11 @@ const MeetingCalendar = () => {
         Schedule a new Meeting
       </h1>
 
+      
+      <Navbar 
+       Navbar= {Navbar}
+      />
+
 
       <MeetingForm
         meetings={Meetings()}
@@ -47,12 +53,10 @@ const MeetingCalendar = () => {
         addToMeetingList={addToMeetingList()}
         removeFromMeetingList={removeFromMeetingList()}
       />
-
-      <Footer
-        
-        
-       
+      <Footer 
+       Footer= {Footer}
       />
+      
     </div>
   );
 }; 
