@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import MeetingForm from "./meetingForm";
+import MeetingForm from "./MeetingForm";
+
 
 const MeetingCalendar = () => {
-    const [Meetings, setMeetings] = useState([]);
+    
     const [MeetingList, setMeetingList] = useState([]);
     
-    const addToMeetingList = (MeetingList) => {
+    const addToMeetingList = (Meetings) => {
       const existingItem = Meetings.find((item) => item.id === Meetings.id);
 
     if (existingItem) {
@@ -17,7 +18,19 @@ const MeetingCalendar = () => {
       setMeetingList([...Meetings, { ...Meetings, count: 1 }]);
     }
   }; 
+
+  const removeFromMeetingList = (Meetings) => {
+    const updatedOrderList = orderList.map((item) =>
+      item.id === foodId ? { ...item, count: item.count - 1 } : item
+    );
+    const finalMeetingList= updatedMeetingList.filter((item) => item.count > 0);
+    setMeetingList(finalMeetingList);
+
+  };
+
   return (
+
+    
     <div className={'container mt-5 '}>
       <h1 className={`text-center`}>
         Schedule a new Meeting
@@ -32,6 +45,13 @@ const MeetingCalendar = () => {
       <MeetingList
         MeetingList = {MeetingList()}
         addToMeetingList={addToMeetingList()}
+        removeFromMeetingList={removeFromMeetingList()}
+      />
+
+      <Footer
+        
+        
+       
       />
     </div>
   );
@@ -39,4 +59,4 @@ const MeetingCalendar = () => {
   
 
 
-export default MeetingCalendar
+export default MeetingCalendar;
