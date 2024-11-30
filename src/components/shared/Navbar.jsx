@@ -1,63 +1,39 @@
 import React from "react";
-import { BsCalendar2CheckFill, BsFillPersonFill } from "react-icons/bs";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { FcCalendar } from "react-icons/fc";
+import { FaCircleUser } from "react-icons/fa6";
 
 const Navbar = () => {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-black">
-      <div className="container-fluid">
-        <a className="navbar-brand d-flex align-items-center" href="/">
-          <BsCalendar2CheckFill className="" />
-        </a>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <a className="nav-link text-white" href="/">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="/about">
-                About
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="/services">
-                Services
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="/contact">
-                Contact
-              </a>
-            </li>
-          </ul>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-light dropdown-toggle border-0 bg-black text-white d-flex align-items-center"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-            >
-              <BsFillPersonFill className="me-2" />
-              Demo
-            </button>
-            <ul
-              className="dropdown-menu dropdown-menu-end"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <li>
-                <a className="dropdown-item" href="/logout">
-                  Logout
-                </a>
-              </li>
+    const navItems = [
+        {id: 1, name: "Home", href: "#"},
+        {id: 2, name: "About", href: "#"},
+        {id: 3, name: "Services", href: "#"},
+        {id: 4, name: "Contact", href: "#"}
+    ];
+    return (
+    <div className='container-fluid'>
+        <nav className="navbar navbar-expand-sm bg-dark">
+            <FcCalendar className='mx-2' style={{width: '30px', height: '30px'}}/>
+            <ul className='navbar-nav'>
+                {
+                    navItems.map((item) => {
+                        const liItem = 
+                            <li className='nav-item' key={item.id}>
+                                <a className='nav-link text-light' href={item.href}>{item.name}</a>
+                            </li>
+                        return liItem;
+                    }
+                    )
+                }
             </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
+            <div className="ms-auto mx-2 text-light dropdown">
+                <span className='px-1'><FaCircleUser /></span>
+                <button className='btn btn-dark px-1 dropdown-toggle' type="button" data-bs-toggle="dropdown" id="dropdownMenuButton" aria-expanded="false">Demo</button>
+                <ul className="dropdown-menu text-primary" aria-labelledby="dropdownMenuButton">
+                    <li><a className="dropdown-item" href="#">Signout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
   );
 };
 

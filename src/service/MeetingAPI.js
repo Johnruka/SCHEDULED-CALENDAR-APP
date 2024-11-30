@@ -1,16 +1,36 @@
-const meetings = [
-    {id: 1 , text: "morning meeting"},
-    {id: 2 , text: "lecture"}
-];
+let meetingData = [];
 
-export const getMeetingsAPI = () => {
-    
-    return meetings;
-}
+export const getAllMeetingsData = () => {
+    return meetingData;
+};
 
+export const addMeetingData = (meeting) => {
+    const newMeeting = {
+        id: meetingData.length+1,
+        title: meeting.title,
+        date: meeting.date,
+        time: meeting.time,
+        level: meeting.level,
+        participants: meeting.participants,
+        description: meeting.description
+    };
+    meetingData.push(newMeeting);
+    console.log(meetingData);
+};
 
-export const addMeetingAPI = (inputMeetingText) => {
-    const newMeeting = { id: meetings.length + 1  , text: inputMeetingText};
-    meetings.push(newMeeting);
-    return newMeeting;
-}
+export const updateMeetingData = (id, meeting) => {
+    for(let i=0; i<meetingData.length; i++) {
+        if(meetingData[i].id === id) {
+            meeting.id = id;
+            meetingData[i] = meeting;
+            break;
+        }
+    }
+    console.log(meetingData);
+};
+
+export const deleteMeetingData = (deleteId) => {
+    const foundMeeting = meetingData.filter(meeting => meeting.id !== deleteId);
+    meetingData = foundMeeting;
+    console.log(meetingData);
+};
