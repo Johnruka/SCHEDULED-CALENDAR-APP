@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
-import MeetingApp from './components/shared/MeetingApp'
+import MeetingApp from '../src/MeetingApp'
 
 createRoot(document.getElementById('root')).render(<MeetingApp />);
