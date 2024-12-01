@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AlertMessage from '../Meeting/alertMessage';
 import Dashboard from '../Meeting/Dashboard';
-import ScheduleMeeting from '../Meeting/MeetingForm';
+import ScheduleMeeting from '../Meeting/ScheduleMeetingForm';
 import MeetingsList from '../Meeting/MeetingList';
 import { getAllMeetingsData } from '../../service/MeetingAPI';
 import { FaCalendarAlt } from "react-icons/fa";
