@@ -1,20 +1,31 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useForm } from "react-hook-form";
+import { addMeetingData, updateMeetingData } from '../../service/MeetingAPI';
 
 
-const ScheduleMeeting = ({ addMeeting }) => {
+const ScheduleMeeting = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    addMeeting(data);
-    reset();
+  const onSubmit = () => {
+    if(!document.getElementById('createMeeting').disabled) {
+        addMeetingData(props.meetingFormData);
+        props.setAlertName("CREATED");
+        props.setAlertColor("success");
+  } else {
+    updateMeetingData(props.editId, props.meetingFormData);
+    document.getElementById("createMeeting").disabled = false;
+    document.getElementById("editMeeting").disabled = true;
+    props.setAlertName("EDITED");
+    props.setAlertColor("warning");
+}
+props.setShowAlert(true);
+props.clearFields();
   };
 
   return (
@@ -138,6 +149,7 @@ const ScheduleMeeting = ({ addMeeting }) => {
       <button type="submit" className="btn btn-primary">
         Create Meeting
       </button>
+      
     </form>
   );
 };
