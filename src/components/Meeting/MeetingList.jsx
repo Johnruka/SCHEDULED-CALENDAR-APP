@@ -54,7 +54,7 @@ const MeetingsList = (props) => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Title</th>
+                    <th>Meeting Title</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Level</th>

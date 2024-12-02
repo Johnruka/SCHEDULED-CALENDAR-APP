@@ -1,8 +1,27 @@
 #root {
-    max-width: 1300px;
+    max-width: 1000px;
+    height: 800px;
     margin: 0 auto;
     padding: 10px;
     text-align: Auto;
+
+  }
+  
+  
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
 
     .read-the-docs {
       color: #888;
@@ -11,4 +30,4 @@
 
     
   
-  }
+  

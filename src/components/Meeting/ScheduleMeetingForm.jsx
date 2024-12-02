@@ -1,4 +1,7 @@
 import React from "react";
+import { HiMiniPlus } from "react-icons/hi2";
+import { AiOutlineSave } from "react-icons/ai";
+import { MdClear } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useForm } from "react-hook-form";
 import { addMeetingData, updateMeetingData } from '../../service/MeetingAPI';
@@ -33,7 +36,7 @@ props.clearFields();
       <div className="mb-3">
         <label className="form-label">Meeting Title</label>
         <input
-          {...register("title", {
+          {...register("meeting title", {
             required: "Title is required",
           })}
           placeholder="Enter meeting title"
@@ -146,9 +149,11 @@ props.clearFields();
           <div className="invalid-feedback">{errors.description.message}</div>
         )}
       </div>
-      <button type="submit" className="btn btn-primary">
-        Create Meeting
-      </button>
+      <div className='mt-2'>
+                <button type="submit" className='btn btn-success mx-2' id="createMeeting"><HiMiniPlus /> Create Meeting</button>
+                <button type="submit" className='btn btn-success mx-2' id="editMeeting" style={{backgroundColor: "#fd7e14"}} disabled><AiOutlineSave /> Edit</button>
+                <button type="button" className='btn btn-warning mx-2' id="clearFields" onClick={() => { props.setShowAlert(false); props.clearFields(); }}><MdClear /> Clear</button>
+            </div>
       
     </form>
   );
