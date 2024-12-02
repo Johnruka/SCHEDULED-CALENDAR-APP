@@ -9,7 +9,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 const Meeting = () => {
     const [meetingFormData, setMeetingFormData] = useState({
-        title: "",
+        MeetingTitle: "",
         date: "",
         time: "",
         level: "",
@@ -24,7 +24,7 @@ const Meeting = () => {
     const [reload, setReload] = useState(false);
     const clearFields = () => {
         setMeetingFormData({
-            title: "",
+            MeetingTitle: "",
             date: "",
             time: "",
             level: "",
