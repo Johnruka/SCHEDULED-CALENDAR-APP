@@ -16,6 +16,13 @@ export const addMeetingData = (meeting) => {
     };
     meetingData.push(newMeeting);
     console.log(meetingData);
+
+};
+
+export const deleteMeetingData = (deleteId) => {
+    const foundMeeting = meetingData.filter(meeting => meeting.id !== deleteId);
+    meetingData = foundMeeting;
+    console.log(meetingData);
 };
 
 export const updateMeetingData = (id, meeting) => {
@@ -29,8 +36,3 @@ export const updateMeetingData = (id, meeting) => {
     console.log(meetingData);
 };
 
-export const deleteMeetingData = (deleteId) => {
-    const foundMeeting = meetingData.filter(meeting => meeting.id !== deleteId);
-    meetingData = foundMeeting;
-    console.log(meetingData);
-};
