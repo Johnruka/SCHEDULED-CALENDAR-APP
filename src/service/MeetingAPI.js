@@ -1,9 +1,5 @@
 let meetingData = [];
 
-export const getAllMeetingsData = () => {
-    return meetingData;
-};
-
 export const addMeetingData = (meeting) => {
     const newMeeting = {
         id: meetingData.length+1,
@@ -34,5 +30,11 @@ export const updateMeetingData = (id, meeting) => {
         }
     }
     console.log(meetingData);
-};
+    
+ };
+    
+export const getAllMeetingsData = () => {
+        return meetingData;
+    };
+
 
