@@ -9,7 +9,7 @@ const MeetingsList = (props) => {
             const trElement = 
                 <tr key={meeting.id}>
                     <td>{meeting.id}</td>
-                    <td>{meeting.title}</td>
+                    <td>{meeting.meetingTitle}</td>
                     <td>{meeting.date}</td>
                     <td>{meeting.time}</td>
                     <td>{meeting.level}</td>
@@ -27,7 +27,7 @@ const MeetingsList = (props) => {
         console.log("Id to edit: ", editId);
         const foundMeeting = props.allMeetingsData.filter(meeting => meeting.id === editId);
         const setMeeting = {
-            title: foundMeeting[0].title,
+            meetingTitle: foundMeeting[0].meetingTitle,
             date: foundMeeting[0].date,
             time: foundMeeting[0].time,
             level: foundMeeting[0].level,
