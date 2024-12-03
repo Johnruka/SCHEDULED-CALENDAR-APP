@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import AlertMessage from '../Meeting/alertMessage';
+import AlertMessage from '../Meeting/AlertMessage';
 import Dashboard from '../Meeting/Dashboard';
 import ScheduleMeeting from '../Meeting/ScheduleMeetingForm';
 import MeetingsList from '../Meeting/MeetingList';
