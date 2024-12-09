@@ -1,42 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AlertMessage from '../Meeting/AlertMessage';
 import Dashboard from '../Meeting/Dashboard';
-import ScheduleMeeting from '../Meeting/ScheduleMeetingForm';
+import ScheduleMeeting from '../Meeting/ScheduleMeeting';
 import MeetingsList from '../Meeting/MeetingList';
-import { getAllMeetingsData } from '../../service/MeetingAPI';
+
+
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaCheckCircle } from 'react-icons/fa';
 
 const Meeting = () => {
-    const [meetingFormData, setMeetingFormData] = useState({
-        MeetingTitle: "",
-        date: "",
-        time: "",
-        level: "",
-        participants: "",
-        description: ""
-    });
-    const [allMeetingsData, setAllMeetingsData] = useState([]);
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertName, setAlertName] = useState('');
-    const [alertColor, setAlertColor] = useState('');
-    const [editId, setEditId] = useState();
-    const [reload, setReload] = useState(false);
-    const clearFields = () => {
-        setMeetingFormData({
-            MeetingTitle: "",
-            date: "",
-            time: "",
-            level: "",
-            participants: "",
-            description: ""
-        });
-        setReload(!reload);
-    };
-
-    useEffect(() => {
-        setAllMeetingsData(getAllMeetingsData());
-    }, [reload]);
+   
 
     return (
     <div className='container-fluid bg-light'>
@@ -57,28 +30,15 @@ const Meeting = () => {
                     <div className="card mb-1">
                         <div className="card-body">
                             <h5 className="card-title bg-primary ps-1 py-1 rounded text-white"><FaCalendarAlt /> Schedule a New Meeting</h5>
-                            <ScheduleMeeting 
-                                reload={reload} setReload={setReload} 
-                                meetingFormData={meetingFormData} setMeetingFormData={setMeetingFormData} 
-                                editId={editId} setEditId={setEditId}
-                                setShowAlert={setShowAlert}
-                                setAlertName={setAlertName}
-                                setAlertColor={setAlertColor}
-                                clearFields={clearFields} />
+                            <ScheduleMeeting />
+                               
                         </div>
                     </div>
                     <div className="card mb-1">
                         <div className="card-body">
-                            <h5 className="card-title">List of Created Meetings</h5>
+                            <h5 className="card-title">Meetings</h5>
                             <MeetingsList 
-                                reload={reload} setReload={setReload} 
-                                allMeetingsData={allMeetingsData} 
-                                meetingFormData={meetingFormData} setMeetingFormData={setMeetingFormData} 
-                                editId={editId} setEditId={setEditId}
-                                setShowAlert={setShowAlert}
-                                setAlertName={setAlertName}
-                                setAlertColor={setAlertColor}
-                                clearFields={clearFields} />
+                              />
                         </div>
                     </div>
                 </div>

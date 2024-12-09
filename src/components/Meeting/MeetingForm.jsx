@@ -1,32 +1,19 @@
 import React from "react";
-import { HiMiniPlus } from "react-icons/hi2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useForm } from "react-hook-form";
-import { addMeetingData, updateMeetingData } from '../../service/MeetingAPI';
 
-
-const ScheduleMeeting = () => {
+const MeetingForm = ({ addMeeting }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     watch,
   } = useForm();
 
-  const onSubmit = () => {
-    if(!document.getElementById('createMeeting').disabled) {
-        addMeetingData(props.meetingFormData);
-        props.setAlertName("CREATED");
-        props.setAlertColor("success");
-  } else {
-    updateMeetingData(props.editId, props.meetingFormData);
-    document.getElementById("createMeeting").disabled = false;
-    document.getElementById("editMeeting").disabled = true;
-    props.setAlertName("EDITED");
-    props.setAlertColor("warning");
-}
-props.setShowAlert(true);
-props.clearFields();
+  const onSubmit = (data) => {
+    addMeeting(data);
+    reset();
   };
 
   return (
@@ -34,7 +21,7 @@ props.clearFields();
       <div className="mb-3">
         <label className="form-label">Meeting Title</label>
         <input
-          {...register("meeting title", {
+          {...register("title", {
             required: "Title is required",
           })}
           placeholder="Enter meeting title"
@@ -102,9 +89,9 @@ props.clearFields();
           className={`form-control ${errors.level ? "is-invalid" : ""}`}
         >
           <option value="">Choose Level</option>
-          <option value={"team"}>Team</option>
-          <option value={"department"}>Department</option>
-          <option value={"company"}>Company</option>
+          <option value={"Team"}>Team</option>
+          <option value={"Department"}>Department</option>
+          <option value={"Company"}>Company</option>
         </select>
         {errors.level && (
           <div className="invalid-feedback">{errors.level.message}</div>
@@ -147,12 +134,12 @@ props.clearFields();
           <div className="invalid-feedback">{errors.description.message}</div>
         )}
       </div>
-      <div className='mt-2'>
-        <button type="submit" className='btn btn-success mx-2' id="createMeeting"><HiMiniPlus /> Create Meeting</button>
-      </div>
-      
+      <button type="submit" className="btn btn-primary">
+     
+        Create Meeting
+      </button>
     </form>
   );
 };
 
-export default ScheduleMeeting;
+export default MeetingForm;

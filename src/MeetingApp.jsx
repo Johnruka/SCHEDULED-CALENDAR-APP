@@ -1,18 +1,18 @@
 import React from 'react';
-import Navbar from './components/shared/Navbar'
-import Meeting from './components/shared/MainMeeting';
-import Footer from './components/shared/Footer'
 import './StyleApp.css'
+import Footer from './components/shared/Footer';
+import MeetingRouters from './components/Router/MeetingRouters';
+
 
 
 
 const MeetingApp = () => {
   return (
-    <div>
-     <Navbar/>
-     <Meeting/>
+     <>
+     <MeetingRouters/>
      <Footer/>
-    </div>
+     </>
+    
   );
 };
 

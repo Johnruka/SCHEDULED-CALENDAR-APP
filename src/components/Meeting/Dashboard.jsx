@@ -1,5 +1,6 @@
-import React from 'react';
-import { AiOutlineDashboard } from "react-icons/ai";
+import React from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import MeetingList from "../Meeting/MeetingList";
 import { FaCalendarPlus } from "react-icons/fa";
 import { FaCalendar } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
@@ -7,47 +8,100 @@ import { IoIosNotifications } from "react-icons/io";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 
+
+
 const Dashboard = () => {
-    const dashboardItems = [
-        {id: 1, name: "Schedule Meeting", icon: <FaCalendarPlus />, href: "#"},
-        {id: 2, name: "Manage Meetings", icon: <FaCalendar />, href: "#"},
-        {id: 3, name: "Users & Permissions", icon: <FaUsers />, href: "#"},
-        {id: 4, name: "Notifications", icon: <IoIosNotifications />, href: "#"},
-        {id: 5, name: "Analytics", icon: <BsGraphUpArrow />, href: "#"},
-        {id: 6, name: "Settings", icon: <IoSettingsSharp />, href: "#"}
-    ];
+  const navigate = useNavigate();
 
-    const displayDashboardItems = () => {
-        let liElements = dashboardItems.map((item) => {
-            const liElement = 
-                <li className="list-group-item" id={item.id} key={item.id}>
-                    <a href={item.href} className="list-group-item list-group-item-action" onClick={() => handleDashboardClick(item.id, item.href)}>{item.icon} {item.name}</a>
-                </li>
-            return liElement;
-        });
-        return liElements;
-    };
-    
-    const handleDashboardClick = (id) => {
-        const appendClassName = "active";
-        for(let i=1; i<=dashboardItems.length; i++) {
-            document.getElementById(i).classList.remove(appendClassName);
-        }
-        document.getElementById(id).classList.add(appendClassName);
-
+  return (
+    <div className={{ display: "flex align-items-left", height: "100vh" }}>
+      
+      <aside
+        style={{
+          width: "250px",
+          background: "#f8f9fa",
+          padding: "16px",
+          borderRight: "1px solid #ddd ",
+          
+        }}
+      >
+        <h3>Dashboard</h3>
        
-    };
-
-    return (
-    <div className='card'>
-        <div className='card-header bg-dark text-light'>
-            <h4 className='text-center'><span><AiOutlineDashboard /></span> Dashboard</h4>
-        </div>
-        <ul className="list-group list-group-flush inActive">
-            {displayDashboardItems()}
-        </ul>
+        <nav>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            <li>
+              <button className="btn btn-outline-primary w-100 mb-2">
+              <FaCalendarPlus />
+              Schedule Meeting {() => navigate("/dashboard/ScheduleMeeting")}
+              </button>
+            </li>
+            <li>
+              <button
+                 >
+            </button>
+                 <button className="btn btn-outline-primary w-100 mb-2">
+                 <FaCalendar />
+                 Manage Meetings {() => navigate("/dashboard/MeetingList")}
+              </button>
+            </li>
+            <li>
+              <button
+                >
+               </button>
+               <button className="btn btn-outline-primary w-100 mb-2">
+               <FaUsers />
+               Users & Permissions {() => navigate("/dashboard/Users")}
+              </button>
+              </li>
+            <li>
+              <button
+                >
+                   </button>
+                   <button className="btn btn-outline-primary w-100 mb-2">
+                   <IoIosNotifications />
+                   Notifications {() => navigate("/dashboard/Notifications")}
+              </button>
+              </li>
+            <li>
+              <button
+               >
+                   </button>
+                   <button className="btn btn-outline-primary w-100 mb-2">
+                   <BsGraphUpArrow />
+                   Analytics  {() => navigate("/dashboard/Analytics")}
+              </button>
+              </li>
+            <li>
+              <button
+                >
+                  
+                 </button>
+                   <button className="btn btn-outline-primary w-100 mb-2">
+                   <IoSettingsSharp />
+                   Settings {() => navigate("/dashboard/Settings")}
+                   
+                     
+              </button>
+              </li>
+            <li>
+              <button
+                >             
+                </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main style={{ flex: 1, padding: "10px" }}>
+        <Routes>
+         
+          <Route path="Meetings" element={<MeetingList />} />
+        
+         
+          
+        </Routes>
+      </main>
     </div>
-    );
+  );
 };
 
 export default Dashboard;
