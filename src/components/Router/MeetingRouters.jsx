@@ -13,10 +13,6 @@ const MeetingRouters = () => {
 
     <Router>
         <Navbar />
-        <ScheduleMeeting/>
-        <MeetingList/>
-       
-        
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/home' element={<Dashboard />} />

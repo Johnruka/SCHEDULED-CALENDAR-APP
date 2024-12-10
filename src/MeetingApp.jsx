@@ -1,5 +1,4 @@
 import React from 'react';
-import './StyleApp.css'
 import Footer from './components/shared/Footer';
 import MeetingRouters from './components/Router/MeetingRouters';
 

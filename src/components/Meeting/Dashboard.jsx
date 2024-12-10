@@ -7,97 +7,99 @@ import { FaUsers } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
-
-
+import ScheduleMeeting from "./ScheduleMeeting";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={{ display: "flex align-items-left", height: "100vh" }}>
-      
+    <div
+      style={{
+        display: "flex", // Flexbox layout
+        height: "100vh", // Full viewport height
+        width: "100%", // Full viewport width
+      }}
+    >
+      {/* Left Column */}
       <aside
         style={{
-          width: "250px",
-          background: "#f8f9fa",
-          padding: "16px",
-          borderRight: "1px solid #ddd ",
-          
+          width: "250px", // Fixed width for the sidebar
+          backgroundColor: "#f8f9fa", // Light gray background
+          height: "100%", // Full height of the viewport
+          padding: "16px", // Padding inside the sidebar
+          boxSizing: "border-box", // Include padding in width/height calculations
         }}
       >
-        <h3>Dashboard</h3>
-       
+        <h3>Sidebar</h3>
         <nav>
           <ul style={{ listStyle: "none", padding: 0 }}>
             <li>
+            <button></button>
+              <button className="btn btn-outline-primary w-100 mb-2"
+              onClick={() => navigate("/dashboard/ScheduleMeeting")}
+              >
+                <FaCalendarPlus />
+                Schedule Meeting
+              </button>
+            </li>
+            <li>
+              <button></button>
+              <button
+                className="btn btn-outline-primary w-100 mb-2"
+                onClick={() => navigate("/dashboard/MeetingList")}
+              >
+                <FaCalendar />
+                Manage Meetings
+              </button>
+            </li>
+            <li>
+              <button></button>
               <button className="btn btn-outline-primary w-100 mb-2">
-              <FaCalendarPlus />
-              Schedule Meeting {() => navigate("/dashboard/ScheduleMeeting")}
+                <FaUsers />
+                Users & Permissions {() => navigate("/dashboard/Users")}
               </button>
             </li>
             <li>
-              <button
-                 >
-            </button>
-                 <button className="btn btn-outline-primary w-100 mb-2">
-                 <FaCalendar />
-                 Manage Meetings {() => navigate("/dashboard/MeetingList")}
+              <button></button>
+              <button className="btn btn-outline-primary w-100 mb-2">
+                <IoIosNotifications />
+                Notifications {() => navigate("/dashboard/Notifications")}
               </button>
             </li>
             <li>
-              <button
-                >
-               </button>
-               <button className="btn btn-outline-primary w-100 mb-2">
-               <FaUsers />
-               Users & Permissions {() => navigate("/dashboard/Users")}
+              <button></button>
+              <button className="btn btn-outline-primary w-100 mb-2">
+                <BsGraphUpArrow />
+                Analytics {() => navigate("/dashboard/Analytics")}
               </button>
-              </li>
+            </li>
             <li>
-              <button
-                >
-                   </button>
-                   <button className="btn btn-outline-primary w-100 mb-2">
-                   <IoIosNotifications />
-                   Notifications {() => navigate("/dashboard/Notifications")}
+              <button></button>
+              <button className="btn btn-outline-primary w-100 mb-2">
+                <IoSettingsSharp />
+                Settings {() => navigate("/dashboard/Settings")}
               </button>
-              </li>
+            </li>
             <li>
-              <button
-               >
-                   </button>
-                   <button className="btn btn-outline-primary w-100 mb-2">
-                   <BsGraphUpArrow />
-                   Analytics  {() => navigate("/dashboard/Analytics")}
-              </button>
-              </li>
-            <li>
-              <button
-                >
-                  
-                 </button>
-                   <button className="btn btn-outline-primary w-100 mb-2">
-                   <IoSettingsSharp />
-                   Settings {() => navigate("/dashboard/Settings")}
-                   
-                     
-              </button>
-              </li>
-            <li>
-              <button
-                >             
-                </button>
+              <button></button>
             </li>
           </ul>
         </nav>
       </aside>
-      <main style={{ flex: 1, padding: "10px" }}>
+
+      {/* Right Column */}
+      <main
+        style={{
+          flex: 1, // Take up remaining space
+          backgroundColor: "#e9ecef", // Slightly darker gray background
+          padding: "16px", // Padding inside the main content
+          boxSizing: "border-box", // Include padding in width/height calculations
+        }}
+      >
         <Routes>
-         
-          <Route path="Meetings" element={<MeetingList />} />
-        
-         
-          
+          <Route path="MeetingList" element={<MeetingList />} />
+          <Route path="ScheduleMeeting" element={<ScheduleMeeting />} />
+
         </Routes>
       </main>
     </div>

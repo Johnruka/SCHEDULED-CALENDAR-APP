@@ -26,7 +26,7 @@ import { FaCheck, FaTimes } from "react-icons/fa";
           console.log("Unexpected response status:", response.status);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         console.log("Error occured during the API call.");
       });
     console.log("Step3: Finished fetching meetings.");
