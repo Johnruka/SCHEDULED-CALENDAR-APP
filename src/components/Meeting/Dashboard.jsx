@@ -8,6 +8,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import ScheduleMeeting from "./ScheduleMeeting";
+import Users from "./Users";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Dashboard = () => {
           boxSizing: "border-box", // Include padding in width/height calculations
         }}
       >
-        <h3>Sidebar</h3>
+        <h3>Dashboard</h3>
         <nav>
           <ul style={{ listStyle: "none", padding: 0 }}>
             <li>
@@ -54,30 +55,38 @@ const Dashboard = () => {
             </li>
             <li>
               <button></button>
-              <button className="btn btn-outline-primary w-100 mb-2">
+              <button className="btn btn-outline-primary w-100 mb-2"
+              onClick={() => navigate("/dashboard/users")}
+              >
                 <FaUsers />
-                Users & Permissions {() => navigate("/dashboard/Users")}
+                Users & Permissions 
               </button>
             </li>
             <li>
               <button></button>
-              <button className="btn btn-outline-primary w-100 mb-2">
+              <button className="btn btn-outline-primary w-100 mb-2"
+               onClick={() => navigate("/dashboard/Invitations")}
+               >
                 <IoIosNotifications />
-                Notifications {() => navigate("/dashboard/Notifications")}
+                Invitations 
               </button>
             </li>
             <li>
               <button></button>
-              <button className="btn btn-outline-primary w-100 mb-2">
+              <button className="btn btn-outline-primary w-100 mb-2"
+               onClick={() => navigate("/dashboard/Analystics")}
+               >
                 <BsGraphUpArrow />
-                Analytics {() => navigate("/dashboard/Analytics")}
+                Analytics 
               </button>
             </li>
             <li>
               <button></button>
-              <button className="btn btn-outline-primary w-100 mb-2">
+              <button className="btn btn-outline-primary w-100 mb-2"
+              onClick={() => navigate("/dashboard/settings")}
+              >
                 <IoSettingsSharp />
-                Settings {() => navigate("/dashboard/Settings")}
+                Settings 
               </button>
             </li>
             <li>
@@ -99,6 +108,8 @@ const Dashboard = () => {
         <Routes>
           <Route path="MeetingList" element={<MeetingList />} />
           <Route path="ScheduleMeeting" element={<ScheduleMeeting />} />
+          <Route path="Users" element={<Users />} />
+
 
         </Routes>
       </main>
