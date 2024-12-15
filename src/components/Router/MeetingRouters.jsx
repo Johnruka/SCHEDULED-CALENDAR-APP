@@ -10,6 +10,7 @@ import InvitationList from '../Meeting/InvitationList';
 
 
 
+
 const MeetingRouters = () => {
   return (
 
@@ -56,29 +57,23 @@ const Home = ()=> {
  
  
  const About = ()=> {
-    return(<div className='container'>
-        <h1>About Component</h1>
-        <div className='btn-group'>
-            <button className='btn btn-outline-primary' onClick={() => goToNavbar()}>Navigate To About</button>
-            <button className='btn btn-outline-danger' onClick={() => navigate(-1) }>Back</button>
-
-        </div>
-    </div>);
+    return(<div className='container'>About </div>);
+      
     
  }
  
  const Services = ()=> {
-    return (<div className='container'>Services Component</div>);
+    return (<div className='container'>Services </div>);
 
  }
 
     const Contact = ()=> {
-        return (<div className='container'>Contact Component</div>);
+        return (<div className='container'>Contact </div>);
     
     }
 
  const PageNotFound = ()=> {
-     return (<div className='container'>PageNotFound Component</div>);
+     return (<div className='container'>PageNotFound </div>);
  }
  
 
