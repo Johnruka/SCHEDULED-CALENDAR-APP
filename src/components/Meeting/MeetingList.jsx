@@ -102,17 +102,18 @@ import axios from "axios";
                                 <td>
                                     <button 
                                         className="btn btn-warning btn-sm me-2"
-                                        title="Edit Meeting"
                                         onClick={() => onEditMeeting(meeting)}
+                                        title="Edit Meeting"
+                                        
                                     >
-                                        cancel
+                                        EDIT
                                     </button>
                                     <button 
                                         className="btn btn-danger btn-sm"
                                         onClick={() => setConfirmDelete(meeting.id)}
                                         title="Delete Meeting"
                                     >
-                                       delete
+                                       DELETE
                                     </button>
                                 </td>
                             </tr>
