@@ -5,6 +5,7 @@ import Dashboard from '../Meeting/Dashboard';
 import ScheduleMeeting from '../Meeting/ScheduleMeeting';
 import MeetingList from '../Meeting/MeetingList';
 import Users from '../Meeting/Users';
+import InvitationList from '../Meeting/InvitationList';
 
 
 
@@ -25,6 +26,7 @@ const MeetingRouters = () => {
             <Route path='/meetings/*' element={<MeetingList/>} />
             <Route path='/ScheduleMeeting/*' element={<ScheduleMeeting />} />
             <Route path='/Users/*' element={<Users />} />
+            <Route path='/Invitations' element={<InvitationList />} />
             <Route path='*' element={<PageNotFound />} />
            
         </Routes>

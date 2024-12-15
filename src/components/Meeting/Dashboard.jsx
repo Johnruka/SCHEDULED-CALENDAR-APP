@@ -9,6 +9,7 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import ScheduleMeeting from "./ScheduleMeeting";
 import Users from "./Users";
+import InvitationList from "./InvitationList";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ const Dashboard = () => {
           <Route path="MeetingList" element={<MeetingList />} />
           <Route path="ScheduleMeeting" element={<ScheduleMeeting />} />
           <Route path="Users" element={<Users />} />
+          <Route path="Invitations" element={<InvitationList />} />
 
 
         </Routes>
