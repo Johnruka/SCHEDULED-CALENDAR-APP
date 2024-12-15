@@ -44,7 +44,7 @@ const Home = ()=> {
          navigate('/dashboard');
      }
  
-     return (<div className='container'>
+     return(<div className='container'>
          <h1>Home Component</h1>
          <div className='btn-group'>
              <button className='btn btn-outline-primary' onClick={() => goToDashboard()}>Navigate To Dashboard</button>
@@ -56,7 +56,15 @@ const Home = ()=> {
  
  
  const About = ()=> {
-     return (<div className='container'>About Component</div>);
+    return(<div className='container'>
+        <h1>About Component</h1>
+        <div className='btn-group'>
+            <button className='btn btn-outline-primary' onClick={() => goToNavbar()}>Navigate To About</button>
+            <button className='btn btn-outline-danger' onClick={() => navigate(-1) }>Back</button>
+
+        </div>
+    </div>);
+    
  }
  
  const Services = ()=> {
