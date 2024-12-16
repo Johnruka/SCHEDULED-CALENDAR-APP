@@ -3,66 +3,31 @@ import axios from "axios";
 import MeetingForm from './MeetingForm';
 import MeetingList from './MeetingList';
 
-
 const ScheduleMeeting = () => {
-    const apiEndPoint = "http://localhost:8080";
-    
-    
-
+  const apiEndPoint = "http://localhost:8080";
   const [meetings, setMeetings] = useState([]);
   const [editingMeeting, setEditingMeeting] = useState(null);
-  const [reload, setReload] = useState(false);
+
   const loadMeetings = async () => {
-   
-   }
+    try {
+      const data = await axios.getAllMeetings(apiEndPoint + '/api/meetings');
+      setMeetings(data);
+    } catch (error) {
+      console.error('Error loading meetings:', error);
+    }
+  };
+
   useEffect(() => {
-  fetchAllMeetings();
-}, [reload]);
+    loadMeetings();
+  }, []);
 
-const fetchAllMeetings = async () => {
-  console.log("Step1: Starting to fetch meetings...");
-  await axios
-    .get(apiEndPoint + '/api/meetings')
-    .then((response) => {
-      console.log("Step2: Response received.", response);
-      if (response.status === 200) {
-        console.log("response data is: ", response.data);
-        setMeetings(response.data);
-      } else {
-        console.log("Unexpected response status:", response.status);
-      }
-    })
-    .catch(() => {
-      console.log("Error occured during the API call.");
-    });
-  
-  }
-
-  const handleEditMeeting =  async (meeting) => {
+  const handleEditMeeting = (meeting) => {
     const formattedMeeting = {
       ...meeting,
       participants: meeting.participants.join(', ')
     };
     setEditingMeeting(formattedMeeting);
-    try {
-        const response = await axios.put(
-          `${apiEndPoint}/api/meetings/${id}?status=${newStatus}`
-        );
-        if (response.status === 204) {
-          setReload(!reload);
-          setConfirmDelete(null);
-          onMeetingDeleted();
-      } else {
-          alert('Failed to delete meeting: ' + result.error);
-      }
-  } catch (error) {
-      alert('Error deleting meeting: ' + error.message);
-  }
   };
-  
-  useEffect(() => {
-    loadMeetings();
-  }, []);
 
   return (
     <>
@@ -78,6 +43,7 @@ const fetchAllMeetings = async () => {
             onMeetingAdded={loadMeetings}
             editingMeeting={editingMeeting}
             onMeetingUpdated={() => {
+              loadMeetings();
               setEditingMeeting(null);
             }} 
           />
@@ -94,7 +60,6 @@ const fetchAllMeetings = async () => {
         </div>
       </div>
     </>
-   
   );
 };
 export default ScheduleMeeting
