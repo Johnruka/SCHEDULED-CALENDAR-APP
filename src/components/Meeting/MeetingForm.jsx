@@ -91,9 +91,11 @@ const MeetingForm = () => {
       if (!validateTimes(formData.startTime, formData.endTime)) {
         newErrors.endTime = "End time must be after start time";
       }
-    }
+      }
 
     if (!formData.location) newErrors.location = "Meeting location is required";
+  
+
     if (!formData.level) newErrors.level = "Meeting level is required";
 
     if (!formData.participants.trim()) {
