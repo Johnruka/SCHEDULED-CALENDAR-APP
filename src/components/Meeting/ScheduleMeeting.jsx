@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import MeetingForm from './MeetingForm';
-import MeetingList from './MeetingList';
+
 
 const ScheduleMeeting = () => {
   const apiEndPoint = "http://localhost:8080";
@@ -40,23 +40,15 @@ const ScheduleMeeting = () => {
       <div className="row mb-4">
         <div className="col-12">
           <MeetingForm
+            meetings={meetings}
             onMeetingAdded={loadMeetings}
             editingMeeting={editingMeeting}
+            onEditMeeting={handleEditMeeting}
             onMeetingUpdated={() => {
               loadMeetings();
               setEditingMeeting(null);
             }} 
-          />
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-12">
-          <MeetingList 
-            meetings={meetings}
-            onMeetingDeleted={loadMeetings}
-            onEditMeeting={handleEditMeeting}
-          />
+         />
         </div>
       </div>
     </>
