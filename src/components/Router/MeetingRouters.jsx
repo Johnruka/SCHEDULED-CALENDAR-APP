@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {BrowserRouter as Router, Link, Route,Routes, useNavigate} from 'react-router-dom';
 import Navbar from '../shared/Navbar';
 import Dashboard from '../Meeting/Dashboard';
@@ -57,18 +57,26 @@ const Home = ()=> {
  
  
  const About = ()=> {
-    return(<div className='container'>About </div>);
-      
     
+    useEffect(()=> {
+        window.location.href = "https://leaddesk.com/leadapps-store/product/conference-call/";
+    }, [])
+    return null;
  }
  
  const Services = ()=> {
-    return (<div className='container'>Services </div>);
+    useEffect(()=> {
+        window.location.href = "https://leaddesk.com/leadapps-store/product/meeting-calendar/";
+    }, [])
+    return null;   
 
  }
 
     const Contact = ()=> {
-        return (<div className='container'>Contact </div>);
+        useEffect(()=> {
+            window.location.href = "https://leaddesk.com/leadapps-store/product/new-contacts-imported-report/";
+        }, [])
+        return null;  
     
     }
 

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 const MeetingForm = () => {
-  const apiEndPoint = "http://localhost:8080/api/labels";
+  const apiEndPoint = "http://localhost:8080";
 
-  const[onMeetingAdded, editingMeeting, onMeetingUpdated] = useState([]);
+  // State Declarations
+  const [editingMeeting, setEditingMeeting] = useState(null);
+  const [onMeetingUpdated, setOnMeetingUpdated] = useState(false);
+  const [onMeetingAdded, setOnMeetingAdded] = useState(false);
+  
   const [formData, setFormData] = useState({
     title: "",
     Date: "",
@@ -16,12 +19,9 @@ const MeetingForm = () => {
     participants: "",
     description: "",
   });
-
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-   const [reload, setReload] = useState(false);
-
-  
+  const [reload, setReload] = useState(false);
   const [labels, setLabels] = useState({
     titleLabel: "Title", 
     dateLabel: "Date",
@@ -33,52 +33,29 @@ const MeetingForm = () => {
     descriptionLabel: "Description",
   });
 
+  // Fetch Labels from API
   useEffect(() => {
-    fetchLabels();
-  }, [reload]);
     const fetchLabels = async () => {
-      const fetchedLabels = await getFormLabels();
-      console.log("Step1: Starting to fetch Labels...");
-      await axios
-        .get(apiEndPoint)
-        .then((response) => {
-          console.log("Step2: Response received.", response);
-          if (response.status === 200) {
-            console.log("response data is: ", response.data);
-            setLabels(fetchedLabels); ;
-          } else {
-            console.log("Unexpected response status:", response.status);
-          }
-        })
-        .catch(() => {
-          console.log("Error occured during the API call.");
-        });
-      console.log("Step3: Finished fetching meetings.");
-    }; 
-    const updateMeeting = async (id, newStatus) => {
       try {
-        const response = await axios.put(
-          `${apiEndPoint}/${id}?status=${newStatus}`
-        );
-        if (response.status === 204) {
-          setReload(!reload);
-          console.log("Meeting status updated successfully.");
+        const response = await axios.get(apiEndPoint + '/api/labels');
+        if (response.status === 200) {
+          setLabels(response.data);
         }
       } catch (error) {
-        console.log("Error updating meeting:", error);
+        console.error("Error fetching labels", error);
       }
+    };
+    fetchLabels();
+  }, [reload]);
 
-  
   useEffect(() => {
     if (editingMeeting) {
       setFormData(editingMeeting);
     }
   }, [editingMeeting]);
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email.trim());
-  };
+  // Validation Functions
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const validateParticipantEmails = (emails) => {
     if (!emails.trim()) return false;
@@ -88,50 +65,36 @@ const MeetingForm = () => {
 
   const validateTimes = (startTime, endTime) => {
     if (!startTime || !endTime) return true;
-    const meetingDate = formData.meetingDate || "2000-01-01";
-    const start = new Date(`${meetingDate}T${startTime}`);
-    const end = new Date(`${meetingDate}T${endTime}`);
+    const Date = formData.Date || "2000-01-01";
+    const start = new Date(`${Date}T${startTime}`);
+    const end = new Date(`${Date}T${endTime}`);
     return end > start;
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
-    }
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (!formData.Date) newErrors.Date = "Meeting date is required";
 
-    if (!formData.meetingDate) {
-      newErrors.meetingDate = "Meeting date is required";
-    } else {
+    if (formData.Date) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const selectedDate = new Date(formData.meetingDate);
-      if (selectedDate < today) {
-        newErrors.meetingDate = "Meeting date cannot be in the past";
-      }
+      const selectedDate = new Date(formData.Date);
+      if (selectedDate < today) newErrors.Date = "Meeting date cannot be in the past";
     }
 
-    if (!formData.startTime) {
-      newErrors.startTime = "Start time is required";
-    }
-
-    if (!formData.endTime) {
-      newErrors.endTime = "End time is required";
-    }
+    if (!formData.startTime) newErrors.startTime = "Start time is required";
+    if (!formData.endTime) newErrors.endTime = "End time is required";
 
     if (formData.startTime && formData.endTime) {
       if (!validateTimes(formData.startTime, formData.endTime)) {
         newErrors.endTime = "End time must be after start time";
       }
     }
-    if (!formData.location) {
-      newErrors.location = "Meeting location is required";
-    }
 
-    if (!formData.level) {
-      newErrors.level = "Meeting level is required";
-    }
+    if (!formData.location) newErrors.location = "Meeting location is required";
+    if (!formData.level) newErrors.level = "Meeting level is required";
 
     if (!formData.participants.trim()) {
       newErrors.participants = "Participants are required";
@@ -145,70 +108,58 @@ const MeetingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setSubmitting(true);
-      try {
-        const formattedData = {
-          ...formData,
-          participants: formData.participants
-            .split(",")
-            .map((email) => email.trim()),
-        };
+    if (!validateForm()) return;
 
-        let result;
-        if (editingMeeting) {
-          result = await updateMeeting(editingMeeting.id, formattedData);
-        } else {
-          result = await addMeeting(formattedData);
-        }
+    setSubmitting(true);
+    try {
+      const formattedData = {
+        ...formData,
+        participants: formData.participants.split(",").map((email) => email.trim()),
+      };
 
-        if (result.success) {
-          resetForm();
-          if (editingMeeting) {
-            onMeetingUpdated();
-          } else {
-            onMeetingAdded();
-          }
-        } else if (result.fieldErrors) {
-          setErrors(result.fieldErrors);
-        } else {
-          alert(result.error || "Failed to save meeting");
-        }
-      } catch (error) {
-        alert("Error saving meeting: " + error.message);
-      } finally {
-        setSubmitting(false);
-      
+      let result;
+      if (editingMeeting) {
+        result = await axios.put(`${apiEndPoint}/api/meetings/${editingMeeting.id}`, formattedData);
+        setOnMeetingUpdated(true);
+      } else {
+        result = await axios.post(`${apiEndPoint}/api/meetings`, formattedData);
+        setOnMeetingAdded(true);
+      }
+
+      if (result.status === 200 || result.status === 201) {
+        resetForm();
+      } else {
+        alert("Failed to save meeting");
+      }
+    } catch (error) {
+      console.error("Error saving meeting:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const resetForm = () => {
     setFormData({
       title: "",
-      meetingDate: "",
+      Date: "",
       startTime: "",
       endTime: "",
+      location: "",
       level: "",
       participants: "",
       description: "",
     });
     setErrors({});
-  
+    setEditingMeeting(null);
   };
 
   return (
@@ -220,6 +171,7 @@ const MeetingForm = () => {
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
+          {/* Title Field */}
           <div className="mb-3">
             <label className="form-label">{labels.titleLabel}</label>
             <input
@@ -228,155 +180,41 @@ const MeetingForm = () => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              placeholder={`Enter ${labels.titleLabel.toLowerCase()}`}
+              placeholder={`Enter ${labels.titleLabel}`}
             />
-            {errors.title && (
-              <div className="invalid-feedback">{errors.title}</div>
-            )}
+            {errors.title && <div className="invalid-feedback">{errors.title}</div>}
           </div>
 
+          {/* Date and Time Fields */}
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">{labels.dateLabel}</label>
               <input
                 type="date"
-                className={`form-control ${
-                  errors.meetingDate ? "is-invalid" : ""
-                }`}
-                name="meetingDate"
-                value={formData.meetingDate}
+                className={`form-control ${errors.Date ? "is-invalid" : ""}`}
+                name="Date"
+                value={formData.Date}
                 onChange={handleChange}
                 min={new Date().toISOString().split("T")[0]}
               />
-              {errors.meetingDate && (
-                <div className="invalid-feedback">{errors.meetingDate}</div>
-              )}
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">{labels.startTimeLabel}</label>
-              <input
-                type="time"
-                className={`form-control ${
-                  errors.startTime ? "is-invalid" : ""
-                }`}
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleChange}
-              />
-              {errors.startTime && (
-                <div className="invalid-feedback">{errors.startTime}</div>
-              )}
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">{labels.endTimeLabel}</label>
-              <input
-                type="time"
-                className={`form-control ${errors.endTime ? "is-invalid" : ""}`}
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleChange}
-              />
-              {errors.endTime && (
-                <div className="invalid-feedback">{errors.endTime}</div>
-              )}
+              {errors.Date && <div className="invalid-feedback">{errors.Date}</div>}
             </div>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">{labels.levelLabel}</label>
-            <select
-              className={`form-select ${errors.level ? "is-invalid" : ""}`}
-              name="level"
-              value={formData.level}
-              onChange={handleChange}
-            >
-              <option value="">Select {labels.levelLabel.toLowerCase()}</option>
-              <option value="Team">Team</option>
-              <option value="Department">Department</option>
-              <option value="Company">Company</option>
-            </select>
-            {errors.level && (
-              <div className="invalid-feedback">{errors.level}</div>
-            )}
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label">{labels.participantsLabel}</label>
-            <input
-              type="text"
-              className={`form-control ${
-                errors.participants ? "is-invalid" : ""
-              }`}
-              name="participants"
-              value={formData.participants}
-              onChange={handleChange}
-              placeholder="e.g., john@example.com, jane@example.com"
-            />
-            {errors.participants && (
-              <div className="invalid-feedback">{errors.participants}</div>
-            )}
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label">{labels.descriptionLabel}</label>
-            <textarea
-              className={`form-control ${
-                errors.description ? "is-invalid" : ""
-              }`}
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder={`Enter ${labels.descriptionLabel.toLowerCase()}`}
-              rows="3"
-            />
-            {errors.description && (
-              <div className="invalid-feedback">{errors.description}</div>
-            )}
-          </div>
-
+          {/* Submit Button */}
           <div className="text-end">
-            {editingMeeting && (
-              <button
-                type="button"
-                className="btn btn-secondary me-2"
-                onClick={() => {
-                  resetForm();
-                  onMeetingUpdated(); 
-                }}
-              >
-                <i className="bi bi-x-circle me-2"></i>
-                Cancel Edit
-              </button>
-            )}
             <button
               type="submit"
               className="btn btn-primary"
               disabled={submitting}
             >
-              {submitting ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <i className="bi bi-save me-2"></i>
-                  {editingMeeting ? "Update Meeting" : "Save Meeting"}
-                </>
-              )}
+              {submitting ? "Saving..." : "Save Meeting"}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-}
-  }
-    }
 };
 
 export default MeetingForm;
