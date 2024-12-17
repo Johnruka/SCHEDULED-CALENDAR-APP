@@ -66,7 +66,7 @@ const MeetingForm = ({ reloadMeetings }) => {
       </div>
       <div className="row">
         <div className="mb-3 col-md-6">
-          <label className="form-label">Meeting Date</label>
+          <label className="form-label">MeetingDate</label>
           <input
             {...register("date", {
               required: "Date is required",
@@ -112,24 +112,19 @@ const MeetingForm = ({ reloadMeetings }) => {
           {errors.time && (
             <div className="invalid-feedback">{errors.time.message}</div>
           )}
-           </div>
-      <div className="mb-3">
-        <label className="form-label">Location</label>
-        <textarea
-          {...register("Location", {
+          </div>
+          <div className="mb-3">
+        <label className="form-label">Meeting Location</label>
+        <input
+          {...register("location", {
             required: "Location is required",
-            minLength: {
-              value: 5,
-              message: "Location is too short",
-            },
           })}
-          placeholder="Enter meeting Location"
+          placeholder="Enter meeting location"
           type="text"
           className={`form-control ${errors.location ? "is-invalid" : ""}`}
-          rows="3"
         />
         {errors.location && (
-          <div className="invalid-feedback">{errors.location.message}</div>
+          <div className="invalid-feedback">{errors.location.message}</div> 
         )}
         </div>
       </div>
@@ -191,5 +186,6 @@ const MeetingForm = ({ reloadMeetings }) => {
     </form>
   );
 };
+
 
 export default MeetingForm;
