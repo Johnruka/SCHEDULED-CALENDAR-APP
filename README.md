@@ -107,15 +107,15 @@ project/
 │ │ │ │ ├── config/ # EventDatabaseInitializer.java
                   / # EventSwaggerConfig.java
 
-│ │ │ │ ├── controller/ # EventController.java
+│ │ │ │ ├── controller/ # MeetingController.java
 
-│ │ │ │ ├── dto/ # EventDto.java
+│ │ │ │ ├── dto/ # MeetingDto.java
 
-│ │ │ │ ├── entity/ # Event.java
+│ │ │ │ ├── entity/ # Meeting.java
 
-│ │ │ │ ├── repository/ # EventRepository.java
+│ │ │ │ ├── repository/ # MeetingRepository.java
 
-│ │ │ │ └── service/ # EventService.java
+│ │ │ │ └── service/ # MeetingService.java
 
 │ │ │ └── resources/
 
@@ -131,21 +131,21 @@ project/
 
 │ │ ├── components/
 
-│ │ │ ├── event
+│ │ │ ├── Meeting
 
-│ │ │ │ └── event.jsx
+│ │ │ │ └── meeting.jsx
 
-│ │ │ │ └── eventForm.jsx
+│ │ │ │ └── meeting.jsx
 
-│ │ │ │ └── eventNavbar.jsx
+│ │ │ │ └── meetingNavbar.jsx
 
-│ │ │ │ └── eventFooter.jsx
+│ │ │ │ └── meetingFooter.jsx
 
-│ │ │ │ └── eventRouter.jsx ,
+│ │ │ │ └── meetingRouter.jsx ,
 
 │ │ ├── main.jsx
 
-│ ├── eventApp.jsx
+│ ├── MeetingApp.jsx
 
 │ └── index.html
 
@@ -155,7 +155,8 @@ project/
 
 └── package.json
 
-Future Enhancements
+FUTURE ENHACE
+
 Add drag-and-drop event scheduling.
 
 Integrate notifications via email or SMS.
