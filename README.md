@@ -4,23 +4,23 @@ The Meeting Calendar App is an integrated module for scheduling, managing, and v
 
 APPLICATION METHODS
 
-User-Friendly Calendar UI:
+USER-FRIENDLY CALENDAR UI:
 
 Interactive and intuitive calendar interface for scheduling and managing events.
 
-CRUD Functionalities:
+CRUD FUNCTIONALITIES:
 
 Create, Read, Update, and Delete meeting events with ease.
 
-Role-Based Access:
+ROLE - BASED - ACCESS:
 
 Sellers and buyers can schedule meetings, while admins manage marketplace events.
 
-Reminders:
+REMINDERS:
 
 Automatic reminders for scheduled events via notifications.
 
-Integration with Marketplace:
+INTERGRATION WITH MARKETPLACE:
 
 Seamlessly connects with user and advertisement data for enhanced functionality.
 
