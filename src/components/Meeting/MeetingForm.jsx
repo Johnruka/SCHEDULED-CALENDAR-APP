@@ -1,191 +1,207 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { BsCalendar2Week } from "react-icons/bs";
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import validator from 'validator';
+import { HiMiniPlus } from "react-icons/hi2";
+import { AiOutlineSave } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 
-const MeetingForm = ({ reloadMeetings }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm();
+const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormData, handleCreateMeeting, handleUpdateMeeting, clearFields, handleCreateButton}) => {
+    const {register, handleSubmit, setValue, getFieldState, clearErrors, 
+        formState: {errors}} = useFormContext();
 
-  const apiEndpoint = "http://localhost:8080/api/meetings";
+        useEffect(() => {
+            console.log("Meeting form data: ", meetingFormData);
+            setValue("startTime", meetingFormData.startTime);
+            setValue("endTime", meetingFormData.endTime);
+        },[]);
 
-  const addMeeting = async (data) => {
-    try {
-      const response = await axios.post(apiEndpoint, data);
-      console.log("Meeting created successfully: ", response.data);
-      reloadMeetings();
-    } catch (error) {
-      console.error("Error creating meeting: ", error);
-    }
+    const validateDate = (enteredDate) => {
+        const currentDate = new Date();
+        const formattedCurrentDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()}`;
+        if(validator.isDate(enteredDate, {
+            format: "YYYY-MM-DD"
+        })) {
+            if(validator.isBefore(enteredDate, formattedCurrentDate)) {
+                return("Enter Future date!");
+            }
+        }
+    };
+
+    const validateStartTime = (enteredTime) => {
+        const currentDate = new Date();
+        const formattedCurrentDateTime = `${String(currentDate.getFullYear()).padStart(2, '0')}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}T${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
+        const enteredDateTime = document.getElementById("dateFor").value+"T"+enteredTime;
+        if(validator.isTime(enteredTime, {
+            format: "HH:mm"
+        })) {
+            if(validator.isBefore(enteredDateTime, formattedCurrentDateTime)) {
+                return("Enter Future time! Use format HH:mm!");
+            }
+        }
+    };
+
+    const validateEndTime = (enteredTime) => {
+        const enteredStartTime = document.getElementById("dateFor").value+"T"+document.getElementById("startTime").value;
+        const enteredEndTime = document.getElementById("dateFor").value+"T"+enteredTime;
+        if(validator.isTime(enteredTime, {
+            format: "HH:mm"
+        })) {
+            if(validator.isBefore(enteredEndTime, enteredStartTime)) {
+                return("End time should be after Start time!");
+            }
+        }
+    };
+
+    const validateEmails = (enteredEmails) => {
+        const emailArray = enteredEmails.split(",").map(email => email.trim());
+        if(emailArray.length > 5)
+            return "Maximum of 5 emails can be entered";
+        for(let eachEmail of emailArray) {
+            if(eachEmail && !/\S+@\S+\.\S+/.test(eachEmail))
+                return `${eachEmail} is not a valid email.`;
+        }
+        return true;
+    };
+
+    const handleClearEvent = () => {
+        handleCreateButton();
+        setShowAlert(false);
+        clearFields();
+        clearErrors();
+    };
+
+    const handleFormValues = (name,value) => {
+        setShowAlert(false);
+        setValue(name, value, {shouldValidate: true});
+        setMeetingFormData({...meetingFormData, [name]: value});
+    };
+
+    return (
+    <div>
+        <form onSubmit={handleSubmit(handleCreateMeeting)}>
+            <div className='row'>
+                <div className='col-md-1'>
+                    <label htmlFor="titleFor" className='fo1rm-label fw-bold'>Meeting Title</label>
+                </div>
+                <div className='col-md-4'>
+                    <input type="text" className='form-control' id='titleFor' placeholder='Enter meeting title'
+                        {...register("title", {
+                            required: {value: true, message: "Title is required"},
+                            onChange: (event) => handleFormValues("title", event.target.value)
+                        })} 
+                        value= {meetingFormData.title}
+                        />
+                        {errors.title && <span className='invalid-feedback d-block'>{errors.title.message}</span>}
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-md-4'>
+                    <label htmlFor="dateFor" className='form-label fw-bold'>Meeting Date</label>
+                    <input type="date" className='form-control' id='dateFor' placeholder="YYYY-MM-DD"
+                        {...register("date", {
+                            required: {value: true, message: "Date is required"},
+                            validate: validateDate,
+                            onChange: (event) => handleFormValues("date", event.target.value)
+                        })} 
+                        value= {meetingFormData.date}
+                        min={new Date().toISOString().split("T")[0]} 
+                        />
+                        {errors.date && <span className='invalid-feedback d-block'>{errors.date.message}</span>}
+                </div>
+                <div className='col-md-4'>
+                    <label htmlFor="startTime" className='form-label fw-bold'>Start Time<span className='fw-light fst-italic'></span></label>
+                    <input type="time" className='form-control' id='startTime' placeholder='HH:mm'
+                        {...register("startTime", {
+                            required: {value: true, message: "Start Time is required"},
+                            validate: validateStartTime,
+                            onChange: (event) => handleFormValues("startTime", event.target.value)
+                        })}
+                        value= {meetingFormData.startTime}
+                        disabled={getFieldState("date") && (!getFieldState("date").isDirty || errors.date)} />
+                        {errors.startTime && <span className='invalid-feedback d-block'>{errors.startTime.message}</span>}
+                </div>
+                <div className='col-md-4'>
+                    <label htmlFor="endTime" className='form-label fw-bold'>End Time<span className='fw-light fst-italic'></span></label>
+                    <input type="time" className='form-control' id='endTime' placeholder='HH:mm'
+                        {...register("endTime", {
+                            required: {value: true, message: "End Time is required"},
+                            validate: validateEndTime,
+                            onChange: (event) => handleFormValues("endTime", event.target.value)
+                        })}
+                        value= {meetingFormData.endTime}
+                        disabled={getFieldState("startTime") && (!getFieldState("startTime").isDirty || errors.startTime)} />
+                        {errors.endTime && <span className='invalid-feedback d-block'>{errors.endTime.message}</span>}
+                </div>
+                <div className='row'>
+                <div className='col-md-2'>
+                    <label htmlFor="locationFor" className='form-label fw-bold'>Meeting Location</label>
+                </div>
+                <div className='col-md-4'>
+                    <input type="text" className='form-control' id='locationFor' placeholder='Enter meeting location'
+                        {...register("location", {
+                            required: {value: true, message: "Location is required"},
+                            onChange: (event) => handleFormValues("location", event.target.value)
+                        })} 
+                        value= {meetingFormData.location}
+                        />
+                        {errors.location && <span className='invalid-feedback d-block'>{errors.location.message}</span>}
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-md-2'>
+                    <label htmlFor="levelFor" className='form-label fw-bold'>Meeting level</label>
+                    <select className="form-select" id="levelFor"
+                        {...register("level", {
+                            required: {value: true, message: "Level is required"},
+                            onChange: (event) => handleFormValues("level", event.target.value)
+                        })} 
+                        value= {meetingFormData.level}
+                        >
+                        <option value="">Choose level</option>
+                        <option value="Team">Team</option>
+                        <option value="Account">Account</option>
+                        <option value="Department">Department</option>
+                        <option value="All">All</option>
+                    </select>
+                    {errors.level && <span className='invalid-feedback d-block'>{errors.level.message}</span>}
+                </div>
+                <div className='row'>
+                    <label htmlFor="participantsFor" className='form-label fw-bold'>Participants<span className='fw-light fst-italic'></span></label>
+                    <input type="text" className='form-control' id='participantsFor' placeholder='Enter participant emails separated by commas'
+                        {...register("participants", 
+                            {
+                                required: {value: true, message: "Participant Emails are required"},
+                                validate: validateEmails,
+                                onChange: (event) => handleFormValues("participants", event.target.value)
+                            }
+                        )} 
+                        value= {meetingFormData.participants}
+                        />
+                        {errors.participants && <span className='invalid-feedback d-block'>{errors.participants.message}</span>}
+                </div>
+            </div>
+            <div>
+                <label htmlFor="descriptionFor" className='form-label fw-bold'>Description</label>
+                <textarea className='form-control' id='descriptionFor' rows="2" placeholder='Enter meeting description'
+                    {...register("description", {
+                        required: {value: true, message: "Description is required"},
+                        onChange: (event) => handleFormValues("description", event.target.value)
+                    })} 
+                    value= {meetingFormData.description}
+                    />
+                    {errors.description && <span className='invalid-feedback d-block'>{errors.description.message}</span>}
+            </div>
+            <div className='form-group mt-2'>
+                {!showEdit ? 
+                    (<button type="submit" className='btn btn-success mx-2' id="createMeeting"><HiMiniPlus /> submit</button>)
+                    :
+                    (<button type="button" className='btn btn-success mx-2' id="editMeeting" style={{backgroundColor: "#fd7e14"}} onClick={handleSubmit(handleUpdateMeeting)}><AiOutlineSave /> Update Meeting</button>)
+                }
+                <button type="button" className='btn btn-warning mx-2' id="clearMeeting" onClick={handleClearEvent}><MdDelete /> Delete</button>
+            </div>
+            </div>
+        </form>
+    </div>
+    );
   };
-
-  const onSubmit = (data) => {
-    addMeeting(data);
-    reset();
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="col-md-12 mb-2">
-        <div>
-          <div
-            style={{
-              backgroundColor: "blue",
-              border: "2px solid",
-              borderRadius: "6px",
-              padding: "10px",
-              color: "white",
-            }}
-          >
-            <h2 className="d-flex align-items-center">
-              <BsCalendar2Week style={{ marginRight: "10px" }} />
-              Schedule a New Meeting
-            </h2>
-          </div>
-        </div>
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Meeting Title</label>
-        <input
-          {...register("title", {
-            required: "Title is required",
-          })}
-          placeholder="Enter meeting title"
-          type="text"
-          className={`form-control ${errors.title ? "is-invalid" : ""}`}
-        />
-        {errors.title && (
-          <div className="invalid-feedback">{errors.title.message}</div>
-        )}
-      </div>
-      <div className="row">
-        <div className="mb-3 col-md-6">
-          <label className="form-label">MeetingDate</label>
-          <input
-            {...register("date", {
-              required: "Date is required",
-              validate: {
-                notPastDate: (value) => {
-                  const today = new Date();
-                  const selectedDate = new Date(value);
-                  return (
-                    selectedDate >= today.setHours(0, 0, 0, 0) ||
-                    "Date cannot be in the past"
-                  );
-                },
-              },
-            })}
-            type="date"
-            className={`form-control ${errors.date ? "is-invalid" : ""}`}
-          />
-          {errors.date && (
-            <div className="invalid-feedback">{errors.date.message}</div>
-          )}
-        </div>
-        <div className="mb-3 col-md-6">
-          <label className="form-label">Meeting Time</label>
-          <input
-            {...register("time", {
-              required: "Time is required",
-              validate: {
-                notPastTime: (value) => {
-                  const today = new Date();
-                  const selectedDate = watch("date");
-                  if (!selectedDate) return "Please select a date first";
-
-                  const selectedDateTime = new Date(`${selectedDate}T${value}`);
-                  return (
-                    selectedDateTime >= today || "Time must be in the future"
-                  );
-                },
-              },
-            })}
-            type="time"
-            className={`form-control ${errors.time ? "is-invalid" : ""}`}
-          />
-          {errors.time && (
-            <div className="invalid-feedback">{errors.time.message}</div>
-          )}
-          </div>
-          <div className="mb-3">
-        <label className="form-label">Meeting Location</label>
-        <input
-          {...register("location", {
-            required: "Location is required",
-          })}
-          placeholder="Enter meeting location"
-          type="text"
-          className={`form-control ${errors.location ? "is-invalid" : ""}`}
-        />
-        {errors.location && (
-          <div className="invalid-feedback">{errors.location.message}</div> 
-        )}
-        </div>
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Level</label>
-        <select
-          {...register("level", { required: "Level is required" })}
-          className={`form-control ${errors.level ? "is-invalid" : ""}`}
-        >
-          <option value="">Choose Level</option>
-          <option value={"Team"}>Team</option>
-          <option value={"Department"}>Department</option>
-          <option value={"Company"}>Company</option>
-        </select>
-        {errors.level && (
-          <div className="invalid-feedback">{errors.level.message}</div>
-        )}
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Participants</label>
-        <input
-          {...register("participants", {
-            required: "Participants are required",
-            pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message: "Email is invalid",
-            },
-          })}
-          placeholder="Enter participant emails"
-          type="text"
-          className={`form-control ${errors.participants ? "is-invalid" : ""}`}
-        />
-        {errors.participants && (
-          <div className="invalid-feedback">{errors.participants.message}</div>
-        )}
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Description</label>
-        <textarea
-          {...register("description", {
-            required: "Description is required",
-            minLength: {
-              value: 5,
-              message: "Description is too short",
-            },
-          })}
-          placeholder="Enter meeting description"
-          type="text"
-          className={`form-control ${errors.description ? "is-invalid" : ""}`}
-          rows="3"
-        />
-        {errors.description && (
-          <div className="invalid-feedback">{errors.description.message}</div>
-        )}
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Create Meeting
-      </button>
-    </form>
-  );
-};
-
-
 export default MeetingForm;
