@@ -8,7 +8,7 @@ const Footer = () => {
       
     >
       <div className="container">
-        <p className="mb-0">
+        <p className="mb-2">
           &copy; {new Date().getFullYear()}  Meeting Calendar All rights
           reserved.
         </p>

@@ -27,7 +27,7 @@ const Navbar = () => {
            </ul>
            <div className="ms-auto mx-2 text-light dropdown">
                 <span className='px-1'><FaCircleUser /></span>
-                <button className='btn btn-dark px-1 dropdown-toggle' type="button" data-bs-toggle="dropdown" id="dropdownMenuButton" aria-expanded="false">Demo</button>
+                <button className='btn btn-dark px-1 dropdown-toggle' type="button" data-bs-toggle="dropdown" id="dropdownMenuButton" aria-expanded="false">Login</button>
                 <ul className="dropdown-menu text-primary" aria-labelledby="dropdownMenuButton">
                     <li><a className="dropdown-item" href="#">Signout</a></li>
                 </ul>

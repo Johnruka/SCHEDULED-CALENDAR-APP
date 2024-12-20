@@ -96,7 +96,7 @@ const Home = ()=> {
             <div className='container-fluid my-5 mx-5'>
                 <h2>Contact Us</h2>
                 <p>Feel free to contact us.</p>
-                <p>Email <a href="sarumathijayaraman@gmail.com">john@test.com</a> </p>
+                <p>Email <a href="">john@test.com</a> </p>
             
              <div className='col-md-6 my-5' style={{width: "600px"}}>
              <img src='\src\assets\MeetingPlanner.png' alt="Meeting Planner" style={{width: "600px", height: "300px"}} />
