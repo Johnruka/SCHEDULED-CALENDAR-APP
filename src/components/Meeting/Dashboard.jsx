@@ -10,6 +10,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import ScheduleMeeting from "./ScheduleMeeting";
 import Users from "./Users";
 import InvitationList from "./InvitationList";
+import Settings from './Settings'
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -111,6 +112,8 @@ const Dashboard = () => {
           <Route path="ScheduleMeeting" element={<ScheduleMeeting />} />
           <Route path="Users" element={<Users />} />
           <Route path="Invitations" element={<InvitationList />} />
+          <Route path="Settings" element={<Settings />} />
+
 
 
         </Routes>
