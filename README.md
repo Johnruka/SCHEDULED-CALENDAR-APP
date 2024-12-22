@@ -1,6 +1,6 @@
 MEETING CALENDAR APPLICATION :
 
-The Meeting Calendar App is an integrated module for scheduling, managing, and viewing meetings or events within the NorthMarket platform. This feature is designed to enhance collaboration between users, facilitate event planning, and streamline user interactions.
+Welcome to the Meeting Calendar App! This application is designed to help you schedule, manage, and organize your meetings effectively. Whether you are planning team meetings, client calls, or personal appointments, this app provides an intuitive interface and robust features to simplify your calendar management.
 
 APPLICATION METHODS
 
@@ -203,3 +203,10 @@ User
 ▼
 
 [Response Back to Frontend]
+
+SUPPORT:
+If you have any questions or need support, please open an issue on GitHub or contact us at test@test.com
+
+---
+
+Thank you for using the Meeting Calendar App! We look forward to helping you manage your meetings efficiently.
