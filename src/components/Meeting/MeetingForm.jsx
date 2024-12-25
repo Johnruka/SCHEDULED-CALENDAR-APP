@@ -6,14 +6,18 @@ import { AiOutlineSave } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 
 const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormData, handleCreateMeeting, handleUpdateMeeting, clearFields, handleCreateButton}) => {
-    const {register, handleSubmit, setValue, getFieldState, clearErrors, 
-        formState: {errors}} = useFormContext();
+    const {register, handleSubmit, setValue, getFieldState, clearErrors, formState: {errors}} = useFormContext();
 
-        useEffect(() => {
-            console.log("Meeting form data: ", meetingFormData);
-            setValue("startTime", meetingFormData.startTime);
-            setValue("endTime", meetingFormData.endTime);
-        },[]);
+    useEffect(() => {
+        setValue("title", meetingFormData.title);
+        setValue("date", meetingFormData.date);
+        setValue("startTime", meetingFormData.startTime);
+        setValue("endTime", meetingFormData.endTime);
+        setValue("location", meetingFormData.location);
+        setValue("level", meetingFormData.level);
+        setValue("participants", meetingFormData.participants);
+        setValue("description", meetingFormData.description);
+    }, [meetingFormData]);
 
     const validateDate = (enteredDate) => {
         const currentDate = new Date();
@@ -62,7 +66,7 @@ const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormDat
         }
         return true;
     };
-
+    
     const handleClearEvent = () => {
         handleCreateButton();
         setShowAlert(false);
@@ -73,13 +77,12 @@ const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormDat
     const handleFormValues = (name,value) => {
         setShowAlert(false);
         setValue(name, value, {shouldValidate: true});
-        setMeetingFormData({...meetingFormData, [name]: value});
+        setMeetingFormData(prevState => ({...prevState, [name]: value}));
     };
 
     return (
-    <div>
         <form onSubmit={handleSubmit(handleCreateMeeting)}>
-            <div className='row'>
+          <div className='row'>
                 <div className='col-md-1'>
                     <label htmlFor="titleFor" className='fo1rm-label fw-bold'>Meeting Title</label>
                 </div>
@@ -159,9 +162,8 @@ const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormDat
                         >
                         <option value="">Choose level</option>
                         <option value="Team">Team</option>
-                        <option value="Account">Account</option>
+                        <option value="Company">Company</option>
                         <option value="Department">Department</option>
-                        <option value="All">All</option>
                     </select>
                     {errors.level && <span className='invalid-feedback d-block'>{errors.level.message}</span>}
                 </div>
@@ -190,22 +192,18 @@ const MeetingForm = ({setShowAlert, showEdit, meetingFormData, setMeetingFormDat
                     value= {meetingFormData.description}
                     />
                     {errors.description && <span className='invalid-feedback d-block'>{errors.description.message}</span>}
-            </div>
+            </div> 
             <div className='form-group mt-2'>
                 {!showEdit ? 
-                    (<button type="submit" className='btn btn-success mx-2' id="createMeeting"><HiMiniPlus /> submit</button>)
+                    (<button type="submit" className='btn btn-success mx-2' id="createMeeting"><HiMiniPlus /> Submit</button>)
                     :
                     (<button type="button" className='btn btn-success mx-2' id="editMeeting" style={{backgroundColor: "#fd7e14"}} onClick={handleSubmit(handleUpdateMeeting)}><AiOutlineSave /> Update Meeting</button>)
                 }
                 <button type="button" className='btn btn-warning mx-2' id="clearMeeting" onClick={handleClearEvent}><MdDelete /> Delete</button>
-            </div>
+                </div>
             </div>
         </form>
-    </div>
     );
-  };
- 
-           
-    
+};
 
 export default MeetingForm;

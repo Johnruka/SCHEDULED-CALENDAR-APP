@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Settings.css'; 
 
 const Settings = () => {
+    const apiEndPoint = "http://localhost:8080/api/settings";   
     const [settings, setSettings] = useState({
         defaultView: 'week',
         timeZone: 'UTC',
         startOfWeek: 'Monday',
     });
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSettings(prevSettings => ({
@@ -16,10 +18,30 @@ const Settings = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // You would typically send settings to a backend server here
-        console.log('Settings saved:', settings);
+        
+        try {
+            console.log('Submitting settings:', settings);
+        
+            const response = await axios.post(apiEndPoint, settings);
+            console.log('Settings saved successfully:', response.data);
+        } catch (error) {
+            if (error.response) {
+                console.error('Server error:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Network error or no response:', error.request);
+            } else {
+                console.error('Error in request setup:', error.message);
+            }
+            console.error('Config:', error.config);    
+        }
+    };
+
+    const handleSave = () => {
+        console.log('Save settings:', settings);
+        // Implement your save logic here if needed
     };
 
     return (
@@ -34,7 +56,6 @@ const Settings = () => {
                         <option value="month">Month</option>
                     </select>
                 </div>
-
                 <div className="form-group">
                     <label className="label">Time Zone:</label>
                     <select name="timeZone" value={settings.timeZone} onChange={handleChange}>
@@ -43,11 +64,9 @@ const Settings = () => {
                         <option value="PST">PST</option>
                         <option value="MST">MST</option>
                         <option value="CST">CST</option>
-                        <option value="GMT">GMT</option>
-                        {/* Add more time zones as needed */}
+                        <option value="GMT">GMT</option>               
                     </select>
                 </div>
-
                 <div className="form-group">
                     <label className="label">Start of the Week:</label>
                     <select name="startOfWeek" value={settings.startOfWeek} onChange={handleChange}>
@@ -55,14 +74,14 @@ const Settings = () => {
                         <option value="Sunday">Sunday</option>
                     </select>
                 </div>
-
-                <button type="submit">Save Settings</button>
+                <button className="btn" onClick={handleSave}>
+                    Save
+                </button>
             </form>
         </div>
     );
 };
 
 export default Settings;
-
 
 

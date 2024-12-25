@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {BrowserRouter as Router, Link, Route,Routes, useNavigate} from 'react-router-dom';
-import Navbar from '../shared/Navbar/Navbar';
+import Navbar from '../shared/Navbar';
 import Dashboard from '../Meeting/Dashboard';
 import ScheduleMeeting from '../Meeting/ScheduleMeeting';
 import MeetingList from '../Meeting/MeetingList';
