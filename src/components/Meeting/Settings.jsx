@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FaSave } from 'react-icons/fa';
 
-
 const Settings = () => {
-    const apiEndPoint = "http://localhost:8080/api/settings";   
+    const apiEndPoint = "http://localhost:8080/api/settings";
     const [settings, setSettings] = useState({
         defaultView: 'week',
         timeZone: 'UTC',
         startOfWeek: 'Monday',
+        language: 'English',
+        timeFormat: '24h',  // Add timeFormat to settings state
     });
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSettings(prevSettings => ({
@@ -21,10 +22,10 @@ const Settings = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         try {
             console.log('Submitting settings:', settings);
-        
+
             const response = await axios.post(apiEndPoint, settings);
             console.log('Settings saved successfully:', response.data);
         } catch (error) {
@@ -72,6 +73,25 @@ const Settings = () => {
                     <select name="startOfWeek" value={settings.startOfWeek} onChange={handleChange}>
                         <option value="Monday">Monday</option>
                         <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label className="label">Language:</label>
+                    <select name="language" value={settings.language} onChange={handleChange}>
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                        <option value="Chinese">Chinese</option>
+                        <option value="Japanese">Japanese</option>
+                        {/* Add more languages as needed */}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label className="label">Time Format:</label>  {/* Add timeFormat form group */}
+                    <select name="timeFormat" value={settings.timeFormat} onChange={handleChange}>
+                        <option value="12h">12-hour</option>
+                        <option value="24h">24-hour</option>
                     </select>
                 </div>
                 <button className="btn" type="submit">
