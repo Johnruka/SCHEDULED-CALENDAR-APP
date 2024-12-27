@@ -9,7 +9,7 @@ const Settings = () => {
         timeZone: 'UTC',
         startOfWeek: 'Monday',
         language: 'English',
-        timeFormat: '24h',  // Add timeFormat to settings state
+        timeFormat: '24h',  
     });
 
     const handleChange = (e) => {
@@ -84,7 +84,6 @@ const Settings = () => {
                         <option value="German">German</option>
                         <option value="Chinese">Chinese</option>
                         <option value="Japanese">Japanese</option>
-                        {/* Add more languages as needed */}
                     </select>
                 </div>
                 <div className="form-group">

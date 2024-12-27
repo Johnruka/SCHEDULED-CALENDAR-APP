@@ -7,21 +7,17 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check the initial login state from localStorage
     const loggedIn = localStorage.getItem('isAuthenticated') === 'true';
     setIsAuthenticated(loggedIn);
   }, []);
-
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default link behavior
-    // Mock login logic
+    e.preventDefault(); 
     localStorage.setItem('isAuthenticated', 'true');
     setIsAuthenticated(true);
   };
 
   const handleLogout = (e) => {
-    e.preventDefault(); // Prevent default link behavior
-    // Mock logout logic
+    e.preventDefault(); 
     localStorage.removeItem('isAuthenticated');
     setIsAuthenticated(false);
   };
