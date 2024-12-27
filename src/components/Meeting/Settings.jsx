@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Settings.css'; 
+import { FaSave } from 'react-icons/fa';
+
 
 const Settings = () => {
     const apiEndPoint = "http://localhost:8080/api/settings";   
@@ -41,7 +42,6 @@ const Settings = () => {
 
     const handleSave = () => {
         console.log('Save settings:', settings);
-        // Implement your save logic here if needed
     };
 
     return (
@@ -74,8 +74,8 @@ const Settings = () => {
                         <option value="Sunday">Sunday</option>
                     </select>
                 </div>
-                <button className="btn" onClick={handleSave}>
-                    Save
+                <button className="btn" type="submit">
+                    <FaSave style={{ marginRight: '8px' }} /> Save
                 </button>
             </form>
         </div>
@@ -84,4 +84,61 @@ const Settings = () => {
 
 export default Settings;
 
+const styles = `
+.settings-container {
+    font-family: Arial, sans-serif;
+    max-width: auto;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid hsla(245, 75%, 41%, 0.833);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #dcdae3;
+}
+
+.settings-container h2 {
+    text-align: center;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #32107c;
+}
+
+select {
+    width: 100%;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;  /* Ensures white text for readability */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+`;
+
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
 

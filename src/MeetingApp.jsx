@@ -1,8 +1,8 @@
 import React from 'react';
 import Footer from './components/shared/Footer';
-import MeetingRouters from './components/Router/MeetingRouters'
-import './StyleApp.css'
 
+import './StyleApp.css'
+import MeetingRouters from './components/Router/MeetingRouters';
 
 const MeetingApp = () => {
   return (
