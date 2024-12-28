@@ -1,33 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { FcCalendar } from "react-icons/fc";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isAuthenticated') === 'true';
-    setIsAuthenticated(loggedIn);
-  }, []);
-  const handleLogin = (e) => {
-    e.preventDefault(); 
-    localStorage.setItem('isAuthenticated', 'true');
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = (e) => {
-    e.preventDefault(); 
-    localStorage.removeItem('isAuthenticated');
-    setIsAuthenticated(false);
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+    // Add additional logic here if needed for global state or applying classes to your app container for themes
   };
 
   return (
-    <div className='navbar navbar-expand-lg navbar-dark bg-dark'>
-      <FcCalendar
-        className='mx-2'
-        style={{ width: '30px', height: '30px' }}
-      />
+    <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-light'}`}>
+      <FcCalendar className='mx-2' style={{ width: '30px', height: '30px' }} />
       <div className='container'>
         <ul className='navbar-nav'>
           <li className='nav-item'>
@@ -43,27 +29,23 @@ const Navbar = () => {
             <Link className='nav-link' to="/contact">Contact</Link>
           </li>
         </ul>
-        <div className="ms-auto mx-2 text-light dropdown">
-          <span className='px-1'><FaCircleUser /></span>
-          <button
-            className='btn btn-dark px-1 dropdown-toggle'
-            type="button"
-            data-bs-toggle="dropdown"
-            id="dropdownMenuButton"
-            aria-expanded="false"
-          >
-            {isAuthenticated ? "Signin" : "Signout"}
-          </button>
-          <ul className="dropdown-menu text-primary" aria-labelledby="dropdownMenuButton">
-            {isAuthenticated ? (
-              <li><a className="dropdown-item" href="#" onClick={handleLogout}>Signout</a></li>
+        <div className="ms-auto mx-2">
+          <button className="btn btn-link text-decoration-none d-flex align-items-center" onClick={toggleTheme}>
+            {isDarkMode ? (
+              <>
+                <FaSun style={{ color: '#FFA500', width: '20px', height: '20px' }} />
+                <span className="ms-2">Daylight</span>
+              </>
             ) : (
-              <li><a className="dropdown-item" href="#" onClick={handleLogin}>Signin</a></li>
+              <>
+                <FaMoon style={{ color: '#000000', width: '20px', height: '20px' }} />
+                <span className="ms-2">Darklight</span>
+              </>
             )}
-          </ul>
+          </button>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

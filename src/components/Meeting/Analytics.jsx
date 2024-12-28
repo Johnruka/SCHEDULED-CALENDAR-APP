@@ -11,7 +11,12 @@ const Analytics = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(apiEndPoint);
+        const response = await axios.get(apiEndPoint, {
+          headers: {
+            'Authorization': `Basic ${btoa('admin:password')}`
+          }
+        });
+        console.log(response); // To check what response is coming
         if (response.data && Array.isArray(response.data)) {
           setAnalyticsData(response.data);
         } else {

@@ -14,27 +14,35 @@ const InvitationList = () => {
 
   const fetchAllInvitations = async () => {
     console.log("Step1: Starting to fetch invitations...");
-    await axios
-      .get(apiEndPoint)
-      .then((response) => {
-        console.log("Step2: Response received.", response);
-        if (response.status === 200) {
-          console.log("response data is: ", response.data);
-          setInvitations(response.data);
-        } else {
-          console.log("Unexpected response status:", response.status);
+    try {
+      const response = await axios.get(apiEndPoint, {
+        headers: {
+          'Authorization': `Basic ${btoa('admin:password')}` 
         }
-      })
-      .catch((error) => {
-        console.log("Error occured during the API call.");
       });
+      console.log("Step2: Response received.", response);
+      if (response.status === 200) {
+        console.log("response data is: ", response.data);
+        setInvitations(response.data);
+      } else {
+        console.log("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      console.log("Error occurred during the API call.", error);
+    }
     console.log("Step3: Finished fetching invitations.");
   };
 
   const updateInvitationStatus = async (id, newStatus) => {
     try {
       const response = await axios.put(
-        `${apiEndPoint}/${id}?status=${newStatus}`
+        `${apiEndPoint}/${id}?status=${newStatus}`,
+        {}, 
+        {
+          headers: {
+            'Authorization': `Basic ${btoa('admin:password')}` 
+          }
+        }
       );
       if (response.status === 204) {
         setReload(!reload);
@@ -44,6 +52,7 @@ const InvitationList = () => {
       console.log("Error updating invitation:", error);
     }
   };
+
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Invitations</h2>
@@ -68,7 +77,7 @@ const InvitationList = () => {
                 <td>{invitation.title}</td>
                 <td>{invitation.date}</td>
                 <td>{invitation.startTime}</td>
-                <td>{invitation.EndTime}</td>
+                <td>{invitation.endTime}</td>
                 <td>{invitation.location}</td>
                 <td>
                   <span
@@ -94,12 +103,13 @@ const InvitationList = () => {
                       >
                         <FaCheck />
                       </button>
-                      <button className="btn btn-sm btn-danger"
-                      onClick={() =>
-                          updateInvitationStatus(invitation.id, "declined")   
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() =>
+                          updateInvitationStatus(invitation.id, "declined")
                         }
-                        >
-                        <FaTimes />  
+                      >
+                        <FaTimes />
                       </button>
                     </>
                   )}
