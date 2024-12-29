@@ -1,39 +1,37 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useNavigate } from 'react-router-dom';  
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
-  const apiEndPoint = "http://localhost:8080/api/Users";
+  const apiEndPoint = 'http://localhost:8080/api/Users';
   const [users, setUsers] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const confirmRowRef = useRef(null);
-  const [currentUser, setCurrentUser] = useState(null);  
+  const [currentUser, setCurrentUser] = useState(null);
   const [reload, setReload] = useState(false);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentUser({ role: "Admin" }); 
-
+    setCurrentUser({ role: 'Admin' });
     fetchAllUsers();
   }, [reload]);
 
   const fetchAllUsers = async () => {
-    await axios.get(apiEndPoint, {
-      headers: {
-        'Authorization': `Basic ${btoa('admin:password')}`
-      }
-    })
-    .then(response => {
+    try {
+      const response = await axios.get(apiEndPoint, {
+        headers: {
+          Authorization: `Basic ${btoa('admin:password')}`,
+        },
+      });
       if (response.status === 200) {
         setUsers(response.data);
       } else {
-        console.log("Unexpected response status:", response.status);
+        console.log('Unexpected response status:', response.status);
       }
-    })
-    .catch(() => {
-      console.log("Error occurred during the API call.");
-    });
-
+    } catch {
+      console.log('Error occurred during the API call.');
+    }
+    
     const handleClickOutside = (event) => {
       if (confirmRowRef.current && !confirmRowRef.current.contains(event.target)) {
         setConfirmDelete(null);
@@ -50,8 +48,8 @@ const Users = () => {
     try {
       const response = await axios.delete(`${apiEndPoint}/${id}`, {
         headers: {
-          'Authorization': `Basic ${btoa('admin:password')}`
-        }
+          Authorization: `Basic ${btoa('admin:password')}`,
+        },
       });
       if (response.status === 204) {
         setReload(!reload);
@@ -65,15 +63,15 @@ const Users = () => {
   };
 
   const navigateToScheduleMeeting = () => {
-    navigate('/scheduleMeeting');  
-  }
+    navigate('/schedule-meeting');  // Ensure correct path
+  };
 
   const hasPermission = (action) => {
     if (!currentUser) return false;
     const { role } = currentUser;
     if (role === 'Admin') return true;
     if (role === 'User' && (action === 'createMeeting' || action === 'deleteMeeting')) return true;
-    if (role === 'Guest' && action === 'view') return true; 
+    if (role === 'Guest' && action === 'view') return true;
     return false;
   };
 
@@ -82,9 +80,9 @@ const Users = () => {
       <div className="container mt-5">
         <h2 className="text-center mb-4">Users</h2>
         {hasPermission('createMeeting') && (
-          <button 
+          <button
             className="btn btn-primary mb-3"
-            onClick={navigateToScheduleMeeting}  
+            onClick={navigateToScheduleMeeting}  // Navigate correctly
           >
             CREATE MEETING
           </button>
@@ -110,11 +108,11 @@ const Users = () => {
                     <td>{user.lastName}</td>
                     <td>{user.email}</td>
                     <td>
-                      <span className={`badge bg-${
-                        user.role === 'Admin' ? 'success' :
-                        user.role === 'User' ? 'warning' :
-                        'danger'
-                      }`}>
+                      <span
+                        className={`badge bg-${
+                          user.role === 'Admin' ? 'success' : user.role === 'User' ? 'warning' : 'danger'
+                        }`}
+                      >
                         {user.role}
                       </span>
                     </td>

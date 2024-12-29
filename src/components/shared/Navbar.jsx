@@ -3,33 +3,46 @@ import { Link } from 'react-router-dom';
 import { FcCalendar } from "react-icons/fc";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated, handleSignIn, handleSignOut }) => {
+  // Initialize isDarkMode to false to start in daylight mode
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => !prevMode);
-    // Add additional logic here if needed for global state or applying classes to your app container for themes
+    // Add logic here if you need additional styling or classes to apply globally
   };
 
   return (
     <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-light'}`}>
-      <FcCalendar className='mx-2' style={{ width: '30px', height: '30px' }} />
       <div className='container'>
-        <ul className='navbar-nav'>
-          <li className='nav-item'>
-            <Link className='nav-link' to="/">Home</Link>
-          </li>
-          <li className='nav-item'>
-            <Link className='nav-link' to="/about">About</Link>
-          </li>
-          <li className='nav-item'>
-            <Link className='nav-link' to="/services">Services</Link>
-          </li>
-          <li className='nav-item'>
-            <Link className='nav-link' to="/contact">Contact</Link>
-          </li>
-        </ul>
-        <div className="ms-auto mx-2">
+        <Link className={`navbar-brand ${isDarkMode ? 'text-light' : 'text-dark'}`} to="/">
+          <FcCalendar className='mx-2' style={{ width: '30px', height: '30px' }} />
+          MeetingApp
+        </Link>
+        <div className="navbar-collapse collapse justify-content-center">
+          <ul className='navbar-nav'>
+            <li className='nav-item'>
+              <Link className={`nav-link ${isDarkMode ? 'text-light' : 'text-dark'}`} to="/">Home</Link>
+            </li>
+            <li className='nav-item'>
+              <Link className={`nav-link ${isDarkMode ? 'text-light' : 'text-dark'}`} to="/about">About</Link>
+            </li>
+            <li className='nav-item'>
+              <Link className={`nav-link ${isDarkMode ? 'text-light' : 'text-dark'}`} to="/services">Services</Link>
+            </li>
+            <li className='nav-item'>
+              <Link className={`nav-link ${isDarkMode ? 'text-light' : 'text-dark'}`} to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="d-flex ms-auto">
+          {isAuthenticated ? (
+            <button className={`btn btn-outline-danger ${isDarkMode ? 'text-light' : 'text-dark'}`} onClick={handleSignOut}>Sign Out</button>
+          ) : (
+            <button className={`btn btn-outline-success ${isDarkMode ? 'text-light' : 'text-dark'}`} onClick={handleSignIn}>Sign In</button>
+          )}
+        </div>
+        <div className="ms-3">
           <button className="btn btn-link text-decoration-none d-flex align-items-center" onClick={toggleTheme}>
             {isDarkMode ? (
               <>
