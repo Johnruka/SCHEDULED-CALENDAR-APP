@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';  
 
 const Users = () => {
   const apiEndPoint = "http://localhost:8080/api/Users";
@@ -8,6 +9,7 @@ const Users = () => {
   const confirmRowRef = useRef(null);
   const [currentUser, setCurrentUser] = useState(null);  
   const [reload, setReload] = useState(false);
+  const navigate = useNavigate();  
 
   useEffect(() => {
     setCurrentUser({ role: "Admin" }); 
@@ -62,6 +64,10 @@ const Users = () => {
     }
   };
 
+  const navigateToScheduleMeeting = () => {
+    navigate('/scheduleMeeting');  
+  }
+
   const hasPermission = (action) => {
     if (!currentUser) return false;
     const { role } = currentUser;
@@ -78,7 +84,7 @@ const Users = () => {
         {hasPermission('createMeeting') && (
           <button 
             className="btn btn-primary mb-3"
-            onClick={() => console.log('Create meeting action')}
+            onClick={navigateToScheduleMeeting}  
           >
             CREATE MEETING
           </button>
