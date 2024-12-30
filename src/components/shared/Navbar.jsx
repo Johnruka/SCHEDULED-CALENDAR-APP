@@ -4,12 +4,11 @@ import { FcCalendar } from "react-icons/fc";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 const Navbar = ({ isAuthenticated, handleSignIn, handleSignOut }) => {
-  // Initialize isDarkMode to false to start in daylight mode
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => !prevMode);
-    // Add logic here if you need additional styling or classes to apply globally
+  
   };
 
   return (
