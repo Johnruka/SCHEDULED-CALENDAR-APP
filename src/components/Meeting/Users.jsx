@@ -31,7 +31,7 @@ const Users = () => {
     } catch {
       console.log('Error occurred during the API call.');
     }
-    
+
     const handleClickOutside = (event) => {
       if (confirmRowRef.current && !confirmRowRef.current.contains(event.target)) {
         setConfirmDelete(null);
@@ -63,7 +63,7 @@ const Users = () => {
   };
 
   const navigateToScheduleMeeting = () => {
-    navigate('/schedule-meeting');  // Ensure correct path
+    navigate('/schedule-meeting');  
   };
 
   const hasPermission = (action) => {
@@ -71,8 +71,15 @@ const Users = () => {
     const { role } = currentUser;
     if (role === 'Admin') return true;
     if (role === 'User' && (action === 'createMeeting' || action === 'deleteMeeting')) return true;
-    if (role === 'Guest' && action === 'view') return true;
+    if (role === 'Guest' && (action === 'view' || action === 'acceptMeetings/declineMeetings')) return true;
     return false;
+  };
+
+  const getPermissions = (role) => {
+    if (role === 'Admin') return 'All permissions';
+    if (role === 'User') return 'Create/Delete Meetings';
+    if (role === 'Guest') return 'View/Accept/Decline Meetings';
+    return 'No permissions';
   };
 
   return (
@@ -82,7 +89,7 @@ const Users = () => {
         {hasPermission('createMeeting') && (
           <button
             className="btn btn-primary mb-3"
-            onClick={navigateToScheduleMeeting}  // Navigate correctly
+            onClick={navigateToScheduleMeeting}  
           >
             CREATE MEETING
           </button>
@@ -96,6 +103,7 @@ const Users = () => {
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Permissions</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -116,6 +124,7 @@ const Users = () => {
                         {user.role}
                       </span>
                     </td>
+                    <td>{getPermissions(user.role)}</td>
                     <td>
                       {hasPermission('deleteMeeting') && (
                         <button
@@ -129,7 +138,7 @@ const Users = () => {
                   </tr>
                   {confirmDelete === user.id && hasPermission('deleteMeeting') && (
                     <tr ref={confirmRowRef}>
-                      <td colSpan="6">
+                      <td colSpan="7">
                         <div className="alert alert-warning d-flex align-items-center justify-content-between m-0">
                           <span>Are you sure you want to delete this meeting?</span>
                           <div>
@@ -154,7 +163,7 @@ const Users = () => {
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="7" className="text-center">
                     No users found
                   </td>
                 </tr>
