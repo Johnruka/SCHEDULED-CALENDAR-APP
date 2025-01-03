@@ -13,43 +13,59 @@ const InvitationList = () => {
   }, [reload]);
 
   const fetchAllInvitations = async () => {
-    console.log("Step1: Starting to fetch invitations...");
     try {
       const response = await axios.get(apiEndPoint, {
         headers: {
-          'Authorization': `Basic ${btoa('admin:password')}` 
+          'Authorization': `Basic ${btoa('admin:password')}`
         }
       });
-      console.log("Step2: Response received.", response);
       if (response.status === 200) {
-        console.log("response data is: ", response.data);
         setInvitations(response.data);
       } else {
-        console.log("Unexpected response status:", response.status);
+        console.error("Unexpected response status:", response.status);
       }
     } catch (error) {
-      console.log("Error occurred during the API call.", error);
+      console.error("Error during fetching invitations:", error);
     }
-    console.log("Step3: Finished fetching invitations.");
   };
 
   const updateInvitationStatus = async (id, newStatus) => {
     try {
       const response = await axios.put(
-        `${apiEndPoint}/${id}?status=${newStatus}`,
-        {}, 
+        `${apiEndPoint}/${id}/status`,
+        null,  // Sending no body data
         {
+          params: { status: newStatus },
           headers: {
-            'Authorization': `Basic ${btoa('admin:password')}` 
+            'Authorization': `Basic ${btoa('admin:password')}`
           }
         }
       );
-      if (response.status === 204) {
+
+      if (response.status === 200) {
         setReload(!reload);
         console.log("Invitation status updated successfully.");
+      } else {
+        console.error("Unexpected response status:", response.status);
       }
     } catch (error) {
-      console.log("Error updating invitation:", error);
+      console.error("Error updating invitation:", error);
+    }
+  };
+
+  const formatDate = (date) => {
+    try {
+      return new Date(date).toLocaleDateString();
+    } catch {
+      return "-";
+    }
+  };
+
+  const formatTime = (time) => {
+    try {
+      return new Date(`1970-01-01T${time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return "-";
     }
   };
 
@@ -71,51 +87,39 @@ const InvitationList = () => {
             </tr>
           </thead>
           <tbody>
-            {invitations.map((invitation, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{invitation.title}</td>
-                <td>{invitation.date}</td>
-                <td>{invitation.startTime}</td>
-                <td>{invitation.endTime}</td>
-                <td>{invitation.location}</td>
-                <td>
-                  <span
-                    className={`badge ${
-                      invitation.status === "accepted"
-                        ? "bg-success"
-                        : invitation.status === "declined"
-                        ? "bg-danger"
-                        : "bg-warning"
-                    }`}
-                  >
-                    {invitation.status}
-                  </span>
-                </td>
-                <td>
-                  {invitation.status === "pending" && (
-                    <>
-                      <button
-                        className="btn btn-sm btn-success"
-                        onClick={() =>
-                          updateInvitationStatus(invitation.id, "accepted")
-                        }
-                      >
-                        <FaCheck />
-                      </button>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() =>
-                          updateInvitationStatus(invitation.id, "declined")
-                        }
-                      >
-                        <FaTimes />
-                      </button>
-                    </>
-                  )}
-                </td>
+            {invitations.length > 0 ? (
+              invitations.map((invitation, index) => (
+                <tr key={invitation.id}>
+                  <td>{index + 1}</td>
+                  <td>{invitation.title}</td>
+                  <td>{formatDate(invitation.date)}</td>
+                  <td>{formatTime(invitation.startTime)}</td>
+                  <td>{formatTime(invitation.endTime)}</td>
+                  <td>{invitation.location}</td>
+                  <td>
+                    <span className={`badge ${invitation.status === "accepted" ? "bg-success" : invitation.status === "declined" ? "bg-danger" : "bg-warning"}`}>
+                      {invitation.status}
+                    </span>
+                  </td>
+                  <td>
+                    {invitation.status === "pending" && (
+                      <>
+                        <button className="btn btn-sm btn-success" onClick={() => updateInvitationStatus(invitation.id, "accepted")}>
+                          <FaCheck />
+                        </button>
+                        <button className="btn btn-sm btn-danger" onClick={() => updateInvitationStatus(invitation.id, "declined")}>
+                          <FaTimes />
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="text-center">No invitations found.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
